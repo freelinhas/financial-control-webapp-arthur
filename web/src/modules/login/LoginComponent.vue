@@ -1,23 +1,46 @@
 <template>
-  <v-container class="fill-height d-flex justify-center align-center">
-    <v-card class="pa-6" elevation="10" rounded="2xl">
+  <v-container class="h-100 w-100 d-flex align-center justify-center pa-0 mt-15">
+    <v-card
+      class="pa-6"
+      elevation="10"
+      rounded="2xl"
+      max-width="500"
+      width="100%"
+    >
       <v-card-title class="text-h5 text-center mb-4">Login</v-card-title>
+
       <v-form @submit.prevent="handleLogin" ref="formRef" v-model="formIsValid">
-        <v-text-field
-          v-model="form.email"
-          label="Email"
-          :rules="[rules.required, rules.email]"
-          type="email"
-          prepend-inner-icon="mdi-email"
-        />
-        <v-text-field
-          v-model="form.password"
-          label="Senha"
-          :rules="[rules.required]"
-          type="password"
-          prepend-inner-icon="mdi-lock"
-        />
-        <v-btn type="submit" color="primary" class="mt-4" :disabled="!formIsValid" block>Entrar</v-btn>
+        <v-row>
+          <v-col cols="12">
+            <v-text-field
+              v-model="form.email"
+              label="Email"
+              :rules="[rules.required, rules.email]"
+              type="email"
+              prepend-inner-icon="mdi-email"
+            />
+          </v-col>
+        </v-row>
+        <v-row>
+          <v-col cols="12">
+            <v-text-field
+              v-model="form.password"
+              label="Senha"
+              :rules="[rules.required]"
+              type="password"
+              prepend-inner-icon="mdi-lock"
+            />
+          </v-col>
+        </v-row>
+        <v-btn
+          type="submit"
+          color="primary"
+          class="mt-4"
+          :disabled="!formIsValid"
+          block
+        >
+          Entrar
+        </v-btn>
       </v-form>
     </v-card>
   </v-container>
@@ -25,7 +48,7 @@
 
 <script setup lang="ts">
 import { ref, reactive } from 'vue'
-import { useLogin } from './composables/useLogin';
+import { useLogin } from './composables/useLogin'
 
 const form = reactive({ email: '', password: '' })
 const formRef = ref()

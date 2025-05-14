@@ -11,6 +11,10 @@ async function bootstrap() {
   const jwtService = app.get(JwtService);
   app.useGlobalGuards(new JwtAuthGuard(reflector, jwtService));
   app.useGlobalInterceptors(new ClassSerializerInterceptor(app.get(Reflector)));
+  app.enableCors({
+    origin: ['http://localhost:3000', 'http://localhost:5173'],
+    credentials: true,
+  });
 
   await app.listen(3000);
 }
