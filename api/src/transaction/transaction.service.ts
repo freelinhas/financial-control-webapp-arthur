@@ -51,7 +51,7 @@ export class TransactionService {
     };
   }
 
-  async findAll(userId: number, month?: number, year?: number): Promise<TransactionResponseDto[]> {
+  async findAll(userId: number, month?: number, year?: number, limit?: number): Promise<TransactionResponseDto[]> {
     const qb = this.transactionRepo
       .createQueryBuilder('transaction')
       .leftJoinAndSelect('transaction.category', 'category')
@@ -61,6 +61,10 @@ export class TransactionService {
       const start = new Date(year, month - 1, 1);
       const end = new Date(year, month, 0, 23, 59, 59, 999);
       qb.andWhere('transaction.date BETWEEN :start AND :end', { start, end });
+    }
+
+    if (limit) {
+      qb.take(limit);
     }
   
     const transactions = await qb.getMany();
@@ -139,7 +143,7 @@ export class TransactionService {
     return {
       income: balance.income,
       expense: balance.expense,
-      total: balance.income - balance.expense,
+      balance: balance.income - balance.expense,
     };
   }  
 }

@@ -12,6 +12,8 @@
   "author": "Brazlucas",
   "license": "ISC",
   "dependencies": {
-    "concurrently": "^9.1.2"
+    "chart.js": "^4.4.9",
+    "concurrently": "^9.1.2",
+    "vue-chartjs": "^5.3.2"
   }
 }

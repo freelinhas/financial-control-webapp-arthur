@@ -5,9 +5,7 @@ import { UpdateCategoryDto } from './dto/update-category.dto';
 
 @Controller('categories')
 export class CategoryController {
-  constructor(private readonly categoryService: CategoryService) {
-    console.log('🟢 CategoryController was loaded');
-  }
+  constructor(private readonly categoryService: CategoryService) {}
 
   @Post()
   create(@Body() createCategoryDto: CreateCategoryDto) {
@@ -17,6 +15,11 @@ export class CategoryController {
   @Get()
   findAll() {
     return this.categoryService.findAll();
+  }
+
+  @Get('/totals')
+  getCategoriesWithTotals() {
+    return this.categoryService.getCategoriesWithTotals();
   }
 
   @Get(':id')

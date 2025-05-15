@@ -19,11 +19,12 @@ export class TransactionController {
   findAll(
     @UserId() userId: number,
     @Query('month') month?: string,
-    @Query('year') year?: string
+    @Query('year') year?: string,
+    @Query('limit') limit?: number,
   ): Promise<TransactionResponseDto[]> {
     const m = month ? parseInt(month, 10) : undefined;
     const y = year ? parseInt(year, 10) : undefined;
-    return this.transactionService.findAll(userId, m, y);
+    return this.transactionService.findAll(userId, m, y, limit);
   }
 
   @Get('/balance')

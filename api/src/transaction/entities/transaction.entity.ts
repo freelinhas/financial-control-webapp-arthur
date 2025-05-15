@@ -8,7 +8,6 @@ import {
 } from 'typeorm';
 import { User } from '../../user/entities/user.entity';
 import { Category } from '../../category/entities/category.entity';
-import { Exclude } from 'class-transformer';
 
 export type TransactionType = 'ENTRY' | 'EXIT';
 
