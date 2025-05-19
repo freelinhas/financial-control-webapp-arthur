@@ -20,11 +20,16 @@ export class TransactionController {
     @UserId() userId: number,
     @Query('month') month?: string,
     @Query('year') year?: string,
-    @Query('limit') limit?: number,
-  ): Promise<TransactionResponseDto[]> {
+    @Query('limit') limit?: string,
+    @Query('page') page?: string,
+    @Query('sortBy') sortBy?: string,
+    @Query('sortOrder') sortOrder?: string,
+  ): Promise<{ data: TransactionResponseDto[]; total: number }>  {
     const m = month ? parseInt(month, 10) : undefined;
     const y = year ? parseInt(year, 10) : undefined;
-    return this.transactionService.findAll(userId, m, y, limit);
+    const l = limit ? parseInt(limit, 10) : 10;
+    const p = page ? parseInt(page, 10) : 1;
+    return this.transactionService.findAll(userId, m, y, l, p, sortBy, sortOrder);
   }
 
   @Get('/balance')
@@ -32,7 +37,7 @@ export class TransactionController {
     @UserId() userId: number,
     @Query('month') month?: string,
     @Query('year') year?: string
-  ) {
+  ): Promise<{ income: number; expense: number; balance: number }> {
     const m = month ? parseInt(month, 10) : undefined;
     const y = year ? parseInt(year, 10) : undefined;
     return this.transactionService.getBalanceByUser(userId, m, y);

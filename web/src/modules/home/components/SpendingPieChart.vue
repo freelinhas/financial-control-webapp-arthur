@@ -1,6 +1,6 @@
 <template>
-  <v-card class="pa-4 mt-15" elevation="2">
-    <h3 class="text-subtitle-1 font-weight-medium mb-4">Distribuição de Gastos por Categoria</h3>
+  <v-card class="pa-10 mt-15" elevation="2">
+    <h1 class="text-h5 font-weight-bold mb-6">Distribuição de gastos por categoria</h1>
     <Bar :data="chartData" :options="chartOptions" />
   </v-card>
 </template>

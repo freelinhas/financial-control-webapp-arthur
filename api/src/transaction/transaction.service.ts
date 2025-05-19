@@ -51,25 +51,35 @@ export class TransactionService {
     };
   }
 
-  async findAll(userId: number, month?: number, year?: number, limit?: number): Promise<TransactionResponseDto[]> {
+  async findAll(
+    userId: number,
+    month?: number,
+    year?: number,
+    limit = 10,
+    page = 1,
+    sortBy = 'date',
+    sortOrder: 'ASC' | 'DESC' = 'DESC'
+  ): Promise<{ data: TransactionResponseDto[]; total: number }> {
     const qb = this.transactionRepo
       .createQueryBuilder('transaction')
       .leftJoinAndSelect('transaction.category', 'category')
-      .where('transaction.userId = :userId', { userId });
+      .where('transaction.userId = :userId', { userId })
   
     if (month && year) {
-      const start = new Date(year, month - 1, 1);
-      const end = new Date(year, month, 0, 23, 59, 59, 999);
-      qb.andWhere('transaction.date BETWEEN :start AND :end', { start, end });
+      const start = new Date(year, month - 1, 1)
+      const end = new Date(year, month, 0, 23, 59, 59, 999)
+      qb.andWhere('transaction.date BETWEEN :start AND :end', { start, end })
     }
 
-    if (limit) {
-      qb.take(limit);
-    }
+    const total = await qb.clone().getCount()
+
+    const transactions = await qb
+      .skip((page - 1) * limit)
+      .take(limit)
+      .orderBy(`transaction.${sortBy}`, sortOrder)
+      .getMany()
   
-    const transactions = await qb.getMany();
-  
-    return transactions.map((t) => ({
+    const data = transactions.map((t) => ({
       id: t.id,
       description: t.description,
       value: t.value,
@@ -80,7 +90,9 @@ export class TransactionService {
         id: t.category.id,
         name: t.category.name,
       },
-    }));
+    }))
+  
+    return { data, total }
   }
 
   async findOne(id: number, userId: number): Promise<TransactionResponseDto> { 
@@ -118,7 +130,7 @@ export class TransactionService {
     return this.transactionRepo.delete(id);
   }
 
-  async getBalanceByUser(userId: number, month?: number, year?: number) {
+  async getBalanceByUser(userId: number, month?: number, year?: number): Promise<{ income: number, expense: number, balance: number }> {
     const qb = this.transactionRepo
       .createQueryBuilder('transaction')
       .where('transaction.userId = :userId', { userId });
@@ -139,11 +151,13 @@ export class TransactionService {
       },
       { income: 0, expense: 0 },
     );
+
+    const round = (valor: number) => Math.round(valor * 100) / 100;
   
     return {
-      income: balance.income,
-      expense: balance.expense,
-      balance: balance.income - balance.expense,
+      income: round(balance.income),
+      expense: round(balance.expense),
+      balance: round(balance.income - balance.expense),
     };
   }  
 }

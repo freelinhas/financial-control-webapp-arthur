@@ -6,8 +6,10 @@ export const dashboardService = {
     return response.data
   },
 
-  async getTransactions() {
-    const response = await api.get('/transactions?limit=5')
+  async getPaginatedTransactions(page: number, limit: number, sortBy: string, sortOrder: string) {
+    const response = await api.get('/transactions', {
+      params: { page, limit, sortBy, sortOrder }
+    })
     return response.data
   }
 }

@@ -54,13 +54,22 @@
       </v-col>
     </v-row>
 
+    <SpendingPieChart height="600" />
+
     <v-row class="mt-10">
       <v-col cols="12">
-        <h2 class="text-h6 mb-4">Últimas Transações</h2>
-        <v-data-table
+        <h1 class="text-h5 font-weight-bold mb-6">Últimas transações</h1>
+        <v-data-table-server
+          v-model:page="page"
+          v-model:items-per-page="itemsPerPage"
           :items="transactions"
+          :loading="loading"
+          @update:options="loadTransactions"
           :headers="headers"
+          :items-length="total"
+          :items-per-page-options="[5, 10, 15]"
           density="comfortable"
+          show-current-page
           class="elevation-1"
         >
           <template v-slot:item.date="{ item }">
@@ -74,20 +83,28 @@
               {{ item.type === 'ENTRY' ? 'Entrada' : 'Saída' }}
             </v-chip>
           </template>
-        </v-data-table>
+        </v-data-table-server>
       </v-col>
     </v-row>
-
-    <SpendingPieChart />
   </v-container>
 </template>
 
 <script setup lang="ts">
-import { onMounted } from 'vue';
+import { onMounted, ref } from 'vue';
 import { useDashboard } from './composables/useDashboard';
+import { usePaginatedTransactions } from './composables/usePaginatedTransactions'
 import SpendingPieChart from './components/SpendingPieChart.vue';
 
-const { summary, transactions, loadDashboard } = useDashboard()
+const { summary, loadDashboard } = useDashboard();
+const { transactions, total, itemsPerPage, sortBy, page, load } = usePaginatedTransactions();
+
+const loading = ref(false)
+
+const loadTransactions = async () => {
+  loading.value = true;
+  await load();
+  loading.value = false;
+}
 
 const formatValue = (value: number) => {
   if (!value) return 'R$ 0,00';
