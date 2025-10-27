@@ -29,7 +29,10 @@ export class TransactionController {
     const y = year ? parseInt(year, 10) : undefined;
     const l = limit ? parseInt(limit, 10) : 10;
     const p = page ? parseInt(page, 10) : 1;
-    return this.transactionService.findAll(userId, m, y, l, p, sortBy, sortOrder);
+
+    const order = sortOrder?.toUpperCase() === 'DESC' ? 'DESC' : 'ASC';
+
+    return this.transactionService.findAll(userId, m, y, l, p, sortBy, order);
   }
 
   @Get('/balance')
