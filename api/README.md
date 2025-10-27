@@ -90,6 +90,22 @@ $ npm run test:e2e
 $ npm run test:cov
 ```
 
+## 🌱 Popular Banco de Dados (Seed)
+
+Para criar dados iniciais (usuário admin, categorias e transações de exemplo):
+
+```bash
+# Popular o banco com dados iniciais
+$ npm run seed
+```
+
+**Credenciais padrão criadas:**
+- Email: `lukkascomics@gmail.com`
+- Senha: `97322607l`
+- Admin: ✅ Sim
+
+Para mais detalhes, consulte [SEED_GUIDE.md](./SEED_GUIDE.md)
+
 ## 📦 Migração de Dados
 
 Se você tinha dados no SQLite e precisa migrar para PostgreSQL:
@@ -102,8 +118,6 @@ Se você tinha dados no SQLite e precisa migrar para PostgreSQL:
 $ npm run migrate:data
 ```
 
-Para mais detalhes sobre a migração, consulte [MIGRATION_GUIDE.md](./MIGRATION_GUIDE.md)
-
 ## 🔧 Scripts Disponíveis
 
 ```bash
@@ -115,6 +129,9 @@ $ npm run build           # Compilar o projeto
 
 # Produção
 $ npm run start:prod      # Iniciar em modo produção
+
+# Seed (Popular Banco)
+$ npm run seed            # Criar dados iniciais no banco
 
 # Migração
 $ npm run migrate:data    # Migrar dados do SQLite para PostgreSQL
