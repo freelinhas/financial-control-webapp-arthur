@@ -145,8 +145,9 @@ export class TransactionService {
   
     const balance = transactions.reduce(
       (acc, t) => {
-        if (t.type === 'ENTRY') acc.income += t.value;
-        if (t.type === 'EXIT') acc.expense += t.value;
+        const value = parseFloat(t.value as any);
+        if (t.type === 'ENTRY') acc.income += value;
+        if (t.type === 'EXIT') acc.expense += value;
         return acc;
       },
       { income: 0, expense: 0 },

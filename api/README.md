@@ -23,14 +23,45 @@
 
 ## Description
 
-[Nest](https://github.com/nestjs/nest) framework TypeScript starter repository.
+Financial Control API - Sistema de controle financeiro desenvolvido com [Nest](https://github.com/nestjs/nest) framework TypeScript.
+
+## 🗄️ Database
+
+Este projeto utiliza **PostgreSQL** como banco de dados. Anteriormente utilizava SQLite.
+
+### Configuração Rápida com Docker
+
+```bash
+# Iniciar PostgreSQL e pgAdmin
+$ docker-compose up -d
+
+# Verificar se está rodando
+$ docker ps
+```
+
+Acesse o pgAdmin em: http://localhost:5050
+- Email: admin@admin.com
+- Senha: admin
+
+### Configuração Manual
+
+Se preferir instalar o PostgreSQL manualmente:
+1. Baixe em: https://www.postgresql.org/download/
+2. Crie o banco de dados: `CREATE DATABASE financial_control;`
 
 ## Project setup
 
 ![Node.js](https://img.shields.io/badge/Node.js-20.0.0-green?logo=node.js&logoColor=white)
+![PostgreSQL](https://img.shields.io/badge/PostgreSQL-15-blue?logo=postgresql&logoColor=white)
 
 ```bash
+# Instalar dependências
 $ npm install
+
+# Copiar arquivo de configuração
+$ cp .env.example .env
+
+# Editar .env com suas credenciais do PostgreSQL
 ```
 
 ## Compile and run the project
@@ -57,6 +88,56 @@ $ npm run test:e2e
 
 # test coverage
 $ npm run test:cov
+```
+
+## 🌱 Popular Banco de Dados (Seed)
+
+Para criar dados iniciais (usuário admin, categorias e transações de exemplo):
+
+```bash
+# Popular o banco com dados iniciais
+$ npm run seed
+```
+
+**Credenciais padrão criadas:**
+- Email: `lukkascomics@gmail.com`
+- Senha: `97322607l`
+- Admin: ✅ Sim
+
+Para mais detalhes, consulte [SEED_GUIDE.md](./SEED_GUIDE.md)
+
+## 📦 Migração de Dados
+
+Se você tinha dados no SQLite e precisa migrar para PostgreSQL:
+
+```bash
+# Certifique-se de que ambos os bancos estão acessíveis
+# e que o arquivo db.sqlite está presente
+
+# Execute o script de migração
+$ npm run migrate:data
+```
+
+## 🔧 Scripts Disponíveis
+
+```bash
+# Desenvolvimento
+$ npm run start:dev        # Iniciar em modo watch
+
+# Build
+$ npm run build           # Compilar o projeto
+
+# Produção
+$ npm run start:prod      # Iniciar em modo produção
+
+# Seed (Popular Banco)
+$ npm run seed            # Criar dados iniciais no banco
+
+# Migração
+$ npm run migrate:data    # Migrar dados do SQLite para PostgreSQL
+
+# TypeORM
+$ npm run typeorm         # Executar comandos TypeORM
 ```
 
 ## Deployment

@@ -1,4 +1,5 @@
 import './assets/main.css'
+import './assets/cyberpunk.css'
 import '@mdi/font/css/materialdesignicons.css'
 
 import { createApp } from 'vue'
@@ -17,6 +18,25 @@ const vuetify = createVuetify({
   },
   components,
   directives,
+  theme: {
+    defaultTheme: 'cyberpunk',
+    themes: {
+      cyberpunk: {
+        dark: true,
+        colors: {
+          background: '#0a0e27',
+          surface: '#141b3d',
+          primary: '#00ffff', // Cyan neon
+          secondary: '#ff00ff', // Magenta neon
+          accent: '#ffff00', // Yellow neon
+          error: '#ff0055',
+          info: '#00d9ff',
+          success: '#00ff9f',
+          warning: '#ffaa00',
+        },
+      },
+    },
+  },
 })
 
 createApp(App).use(vuetify).use(router).use(createPinia()).mount('#app')

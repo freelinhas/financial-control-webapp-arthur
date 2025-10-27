@@ -35,7 +35,7 @@ export class TransactionController {
     return this.transactionService.findAll(userId, m, y, l, p, sortBy, order);
   }
 
-  @Get('/balance')
+  @Get('balance')
   getBalance(
     @UserId() userId: number,
     @Query('month') month?: string,

@@ -1,0 +1,418 @@
+/* ========================================
+   CYBERPUNK THEME - Neon Future Style
+   ======================================== */
+
+/* Variáveis do tema */
+:root {
+  --neon-cyan: #00ffff;
+  --neon-magenta: #ff00ff;
+  --neon-yellow: #ffff00;
+  --neon-green: #00ff9f;
+  --neon-pink: #ff0055;
+  --bg-dark: #0a0e27;
+  --bg-darker: #050814;
+  --surface-dark: #141b3d;
+  --surface-light: #1e2852;
+}
+
+/* Background principal com gradiente */
+body {
+  background: linear-gradient(135deg, #0a0e27 0%, #1a1f4d 100%);
+  background-attachment: fixed;
+  position: relative;
+  overflow-x: hidden;
+}
+
+/* Grid pattern cyberpunk no fundo */
+body::before {
+  content: '';
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-image: 
+    linear-gradient(var(--neon-cyan) 1px, transparent 1px),
+    linear-gradient(90deg, var(--neon-cyan) 1px, transparent 1px);
+  background-size: 50px 50px;
+  opacity: 0.03;
+  pointer-events: none;
+  z-index: 0;
+}
+
+/* Efeito de scanlines */
+body::after {
+  content: '';
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: repeating-linear-gradient(
+    0deg,
+    rgba(0, 0, 0, 0.15),
+    rgba(0, 0, 0, 0.15) 1px,
+    transparent 1px,
+    transparent 2px
+  );
+  pointer-events: none;
+  z-index: 1;
+  animation: scanlines 10s linear infinite;
+}
+
+@keyframes scanlines {
+  0% { transform: translateY(0); }
+  100% { transform: translateY(10px); }
+}
+
+/* App container */
+#app {
+  position: relative;
+  z-index: 2;
+}
+
+/* Títulos com efeito neon */
+h1, h2, h3, h4, h5, h6 {
+  text-shadow: 
+    0 0 10px var(--neon-cyan),
+    0 0 20px var(--neon-cyan),
+    0 0 30px var(--neon-cyan);
+  font-weight: 700 !important;
+  letter-spacing: 1px;
+}
+
+/* Cards com bordas neon e backdrop blur */
+.v-card {
+  background: rgba(20, 27, 61, 0.85) !important;
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(0, 255, 255, 0.2) !important;
+  box-shadow: 
+    0 0 20px rgba(0, 255, 255, 0.15),
+    inset 0 0 20px rgba(0, 255, 255, 0.05) !important;
+  transition: all 0.3s ease;
+}
+
+.v-card:hover {
+  border-color: rgba(0, 255, 255, 0.5) !important;
+  box-shadow: 
+    0 0 30px rgba(0, 255, 255, 0.3),
+    inset 0 0 30px rgba(0, 255, 255, 0.1) !important;
+  transform: translateY(-2px);
+}
+
+/* Botões com efeito neon */
+.v-btn {
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  transition: all 0.3s ease;
+  position: relative;
+  overflow: hidden;
+}
+
+.v-btn::before {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 0;
+  height: 0;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.3);
+  transform: translate(-50%, -50%);
+  transition: width 0.6s, height 0.6s;
+}
+
+.v-btn:hover::before {
+  width: 300px;
+  height: 300px;
+}
+
+.v-btn--variant-elevated {
+  box-shadow: 
+    0 0 15px currentColor,
+    0 5px 15px rgba(0, 0, 0, 0.3) !important;
+}
+
+.v-btn--variant-elevated:hover {
+  box-shadow: 
+    0 0 25px currentColor,
+    0 8px 25px rgba(0, 0, 0, 0.4) !important;
+  transform: translateY(-2px);
+}
+
+/* Chips com brilho neon */
+.v-chip {
+  font-weight: 600;
+  box-shadow: 0 0 10px currentColor;
+  border: 1px solid currentColor;
+}
+
+/* Data tables com estilo cyberpunk */
+.v-data-table {
+  background: rgba(20, 27, 61, 0.6) !important;
+  backdrop-filter: blur(10px);
+}
+
+.v-data-table .v-data-table__th {
+  background: rgba(0, 255, 255, 0.1) !important;
+  color: var(--neon-cyan) !important;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  border-bottom: 2px solid var(--neon-cyan) !important;
+}
+
+.v-data-table .v-data-table__tr:hover {
+  background: rgba(0, 255, 255, 0.05) !important;
+}
+
+.v-data-table .v-data-table__td {
+  border-bottom: 1px solid rgba(0, 255, 255, 0.1) !important;
+}
+
+/* Tabs com estilo futurista */
+.v-tabs {
+  background: rgba(20, 27, 61, 0.7) !important;
+  border-bottom: 2px solid var(--neon-cyan);
+}
+
+.v-tab {
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  transition: all 0.3s ease;
+}
+
+.v-tab--selected {
+  color: var(--neon-cyan) !important;
+  text-shadow: 0 0 10px var(--neon-cyan);
+}
+
+.v-tab:hover {
+  background: rgba(0, 255, 255, 0.1) !important;
+}
+
+/* Inputs e selects com borda neon */
+.v-field {
+  background: rgba(20, 27, 61, 0.6) !important;
+  border: 1px solid rgba(0, 255, 255, 0.3) !important;
+  transition: all 0.3s ease;
+}
+
+.v-field:hover {
+  border-color: rgba(0, 255, 255, 0.5) !important;
+  box-shadow: 0 0 15px rgba(0, 255, 255, 0.2) !important;
+}
+
+.v-field--focused {
+  border-color: var(--neon-cyan) !important;
+  box-shadow: 0 0 20px rgba(0, 255, 255, 0.4) !important;
+}
+
+.v-label {
+  color: rgba(0, 255, 255, 0.7) !important;
+  font-weight: 500;
+}
+
+.v-field--focused .v-label {
+  color: var(--neon-cyan) !important;
+}
+
+/* Dialogs com efeito de entrada */
+.v-dialog {
+  animation: dialogSlideIn 0.3s ease;
+}
+
+@keyframes dialogSlideIn {
+  from {
+    opacity: 0;
+    transform: scale(0.9) translateY(-20px);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1) translateY(0);
+  }
+}
+
+.v-dialog .v-card {
+  border: 2px solid var(--neon-cyan);
+  box-shadow: 
+    0 0 40px rgba(0, 255, 255, 0.4),
+    inset 0 0 40px rgba(0, 255, 255, 0.1) !important;
+}
+
+/* Snackbar com estilo neon */
+.v-snackbar {
+  backdrop-filter: blur(10px);
+}
+
+.v-snackbar__wrapper {
+  border: 1px solid currentColor;
+  box-shadow: 0 0 20px currentColor;
+}
+
+/* Cores especiais para cards de resumo */
+.card-balance {
+  background: linear-gradient(135deg, rgba(0, 255, 255, 0.2) 0%, rgba(0, 209, 255, 0.2) 100%) !important;
+  border-color: var(--neon-cyan) !important;
+}
+
+.card-income {
+  background: linear-gradient(135deg, rgba(0, 255, 159, 0.2) 0%, rgba(0, 200, 120, 0.2) 100%) !important;
+  border-color: var(--neon-green) !important;
+}
+
+.card-expense {
+  background: linear-gradient(135deg, rgba(255, 0, 85, 0.2) 0%, rgba(200, 0, 60, 0.2) 100%) !important;
+  border-color: var(--neon-pink) !important;
+}
+
+/* Animação de pulso para elementos importantes */
+@keyframes neonPulse {
+  0%, 100% {
+    text-shadow: 
+      0 0 10px currentColor,
+      0 0 20px currentColor;
+  }
+  50% {
+    text-shadow: 
+      0 0 20px currentColor,
+      0 0 30px currentColor,
+      0 0 40px currentColor;
+  }
+}
+
+.neon-pulse {
+  animation: neonPulse 2s ease-in-out infinite;
+}
+
+/* Container com efeito de hologram */
+.v-container {
+  position: relative;
+}
+
+/* Scrollbar customizada */
+::-webkit-scrollbar {
+  width: 10px;
+  height: 10px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--bg-darker);
+  border-left: 1px solid rgba(0, 255, 255, 0.1);
+}
+
+::-webkit-scrollbar-thumb {
+  background: linear-gradient(180deg, var(--neon-cyan) 0%, var(--neon-magenta) 100%);
+  border-radius: 5px;
+  box-shadow: 0 0 10px var(--neon-cyan);
+}
+
+::-webkit-scrollbar-thumb:hover {
+  box-shadow: 0 0 20px var(--neon-cyan);
+}
+
+/* Loading overlay */
+.v-overlay__scrim {
+  background: rgba(10, 14, 39, 0.85) !important;
+  backdrop-filter: blur(5px);
+}
+
+.v-progress-circular {
+  filter: drop-shadow(0 0 10px currentColor);
+}
+
+/* Texto com efeito glitch ocasional */
+@keyframes glitch {
+  0% {
+    transform: translate(0);
+  }
+  20% {
+    transform: translate(-2px, 2px);
+  }
+  40% {
+    transform: translate(-2px, -2px);
+  }
+  60% {
+    transform: translate(2px, 2px);
+  }
+  80% {
+    transform: translate(2px, -2px);
+  }
+  100% {
+    transform: translate(0);
+  }
+}
+
+/* Menu items */
+.v-list-item {
+  transition: all 0.3s ease;
+}
+
+.v-list-item:hover {
+  background: rgba(0, 255, 255, 0.1) !important;
+  border-left: 3px solid var(--neon-cyan);
+  padding-left: calc(16px - 3px);
+}
+
+/* Dividers com brilho */
+.v-divider {
+  border-color: rgba(0, 255, 255, 0.2) !important;
+  box-shadow: 0 0 5px rgba(0, 255, 255, 0.3);
+}
+
+/* Badge com efeito neon */
+.v-badge__badge {
+  box-shadow: 0 0 10px currentColor;
+  font-weight: 700;
+}
+
+/* Tooltip */
+.v-tooltip .v-overlay__content {
+  background: rgba(0, 255, 255, 0.95) !important;
+  color: var(--bg-dark) !important;
+  font-weight: 600;
+  border: 1px solid var(--neon-cyan);
+  box-shadow: 0 0 20px var(--neon-cyan);
+}
+
+/* Animação de entrada para cards */
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.v-card {
+  animation: fadeInUp 0.5s ease;
+}
+
+/* Header com linha neon */
+.v-card-title {
+  border-bottom: 1px solid rgba(0, 255, 255, 0.2);
+  padding-bottom: 12px !important;
+  margin-bottom: 12px !important;
+}
+
+/* Icons com glow */
+.v-icon {
+  filter: drop-shadow(0 0 5px currentColor);
+  transition: filter 0.3s ease;
+}
+
+.v-icon:hover {
+  filter: drop-shadow(0 0 10px currentColor);
+}
+
+/* Texto de valores monetários */
+.text-h5, .text-h6 {
+  font-family: 'Courier New', monospace;
+  font-weight: 700;
+}
+
