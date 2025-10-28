@@ -3,4 +3,5 @@ export class UpdateTransactionDto {
   value?: number;
   type?: 'ENTRY' | 'EXIT';
   categoryId?: number;
+  date?: string;
 }

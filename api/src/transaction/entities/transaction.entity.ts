@@ -32,7 +32,13 @@ export class Transaction {
   @JoinColumn({ name: 'userId' })
   user: User;
 
+  @Column()
+  userId: number;
+
   @ManyToOne(() => Category, (category) => category.transactions, { eager: true })
   @JoinColumn({ name: 'categoryId' })
   category: Category;
+
+  @Column()
+  categoryId: number;
 }
