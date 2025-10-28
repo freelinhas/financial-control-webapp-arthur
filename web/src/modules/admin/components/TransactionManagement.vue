@@ -123,8 +123,8 @@
             color="primary"
             variant="elevated"
             :disabled="!formIsValid"
-            :loading="saving"
             @click="handleSubmit"
+            class="cyberpunk-btn"
           >
             {{ isEdit ? 'Atualizar' : 'Criar' }}
           </v-btn>
@@ -143,7 +143,7 @@
         <v-card-actions>
           <v-spacer />
           <v-btn variant="text" @click="deleteDialog = false">Cancelar</v-btn>
-          <v-btn color="error" variant="elevated" :loading="deleting" @click="handleDelete">
+          <v-btn color="error" variant="elevated" @click="handleDelete" class="cyberpunk-btn">
             Excluir
           </v-btn>
         </v-card-actions>
@@ -161,6 +161,8 @@
 import { ref, reactive, onMounted, computed } from 'vue'
 import { adminTransactionService, type Transaction } from '../services/admin-transaction.service'
 import { adminCategoryService, type Category } from '../services/admin-category.service'
+import CyberpunkLoader from '@/components/CyberpunkLoader.vue'
+import { useGlobalLoader } from '@/stores/loader'
 
 const transactions = ref<Transaction[]>([])
 const categories = ref<Category[]>([])
@@ -173,9 +175,10 @@ const deleteDialog = ref(false)
 const formRef = ref()
 const formIsValid = ref(false)
 const isEdit = ref(false)
-const saving = ref(false)
-const deleting = ref(false)
 const transactionToDelete = ref<Transaction | null>(null)
+
+// Loader global para operações
+const { showOverlay, hideLoader } = useGlobalLoader()
 
 const snackbar = ref(false)
 const snackbarMessage = ref('')
@@ -269,7 +272,11 @@ const closeDialog = () => {
 const handleSubmit = async () => {
   if (!formRef.value?.validate()) return
 
-  saving.value = true
+  showOverlay(isEdit.value ? 'Atualizando transação...' : 'Criando transação...')
+  
+  // Pequeno delay para garantir que o loader apareça
+  await new Promise(resolve => setTimeout(resolve, 100))
+  
   try {
     const dto = {
       description: form.description,
@@ -281,17 +288,24 @@ const handleSubmit = async () => {
 
     if (isEdit.value) {
       await adminTransactionService.update(form.id, dto)
-      showSnackbar('Transação atualizada com sucesso!', 'success')
     } else {
       await adminTransactionService.create(dto)
-      showSnackbar('Transação criada com sucesso!', 'success')
     }
+    
     closeDialog()
     await loadTransactions()
+    
+    // Mostrar snackbar após o loader ser escondido
+    hideLoader()
+    setTimeout(() => {
+      showSnackbar(isEdit.value ? 'Transação atualizada com sucesso!' : 'Transação criada com sucesso!', 'success')
+    }, 200)
+    
   } catch (error: any) {
-    showSnackbar(error?.response?.data?.message || 'Erro ao salvar transação', 'error')
-  } finally {
-    saving.value = false
+    hideLoader()
+    setTimeout(() => {
+      showSnackbar(error?.response?.data?.message || 'Erro ao salvar transação', 'error')
+    }, 200)
   }
 }
 
@@ -303,16 +317,27 @@ const confirmDelete = (transaction: Transaction) => {
 const handleDelete = async () => {
   if (!transactionToDelete.value) return
 
-  deleting.value = true
+  showOverlay('Excluindo transação...')
+  
+  // Pequeno delay para garantir que o loader apareça
+  await new Promise(resolve => setTimeout(resolve, 100))
+  
   try {
     await adminTransactionService.delete(transactionToDelete.value.id)
-    showSnackbar('Transação excluída com sucesso!', 'success')
     deleteDialog.value = false
     await loadTransactions()
+    
+    // Mostrar snackbar após o loader ser escondido
+    hideLoader()
+    setTimeout(() => {
+      showSnackbar('Transação excluída com sucesso!', 'success')
+    }, 200)
+    
   } catch (error: any) {
-    showSnackbar(error?.response?.data?.message || 'Erro ao excluir transação', 'error')
-  } finally {
-    deleting.value = false
+    hideLoader()
+    setTimeout(() => {
+      showSnackbar(error?.response?.data?.message || 'Erro ao excluir transação', 'error')
+    }, 200)
   }
 }
 
@@ -339,4 +364,32 @@ onMounted(() => {
   loadTransactions()
 })
 </script>
+
+<style scoped>
+.cyberpunk-btn {
+  position: relative;
+  overflow: hidden;
+  transition: all 0.3s ease;
+}
+
+.cyberpunk-btn::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(0, 255, 255, 0.2), transparent);
+  transition: left 0.5s ease;
+}
+
+.cyberpunk-btn:hover::before {
+  left: 100%;
+}
+
+.cyberpunk-btn:hover {
+  box-shadow: 0 0 15px rgba(0, 255, 255, 0.4);
+  transform: translateY(-1px);
+}
+</style>
 

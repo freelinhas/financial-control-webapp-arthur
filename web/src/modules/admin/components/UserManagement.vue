@@ -93,6 +93,7 @@
 <script setup lang="ts">
 import { ref, onMounted } from 'vue'
 import { adminUserService, type User } from '../services/admin-user.service'
+import CyberpunkLoader from '@/components/CyberpunkLoader.vue'
 
 const users = ref<User[]>([])
 const loading = ref(false)

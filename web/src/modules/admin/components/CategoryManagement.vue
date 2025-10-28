@@ -23,7 +23,7 @@
         </template>
 
         <template v-slot:item.createdAt="{ item }">
-          {{ formatDate(item.createdAt) }}
+          {{ item.createdAt ? formatDate(item.createdAt) : '-' }}
         </template>
 
         <template v-slot:item.actions="{ item }">
@@ -80,8 +80,8 @@
             color="primary"
             variant="elevated"
             :disabled="!formIsValid"
-            :loading="saving"
             @click="handleSubmit"
+            class="cyberpunk-btn"
           >
             {{ isEdit ? 'Atualizar' : 'Criar' }}
           </v-btn>
@@ -100,7 +100,7 @@
         <v-card-actions>
           <v-spacer />
           <v-btn variant="text" @click="deleteDialog = false">Cancelar</v-btn>
-          <v-btn color="error" variant="elevated" :loading="deleting" @click="handleDelete">
+          <v-btn color="error" variant="elevated" @click="handleDelete" class="cyberpunk-btn">
             Excluir
           </v-btn>
         </v-card-actions>
@@ -117,6 +117,8 @@
 <script setup lang="ts">
 import { ref, reactive, onMounted } from 'vue'
 import { adminCategoryService, type Category } from '../services/admin-category.service'
+import CyberpunkLoader from '@/components/CyberpunkLoader.vue'
+import { useGlobalLoader } from '@/stores/loader'
 
 const categories = ref<Category[]>([])
 const loading = ref(false)
@@ -125,13 +127,14 @@ const deleteDialog = ref(false)
 const formRef = ref()
 const formIsValid = ref(false)
 const isEdit = ref(false)
-const saving = ref(false)
-const deleting = ref(false)
 const categoryToDelete = ref<Category | null>(null)
 
 const snackbar = ref(false)
 const snackbarMessage = ref('')
 const snackbarColor = ref('success')
+
+// Loader global para operações
+const { showOverlay, hideLoader } = useGlobalLoader()
 
 const form = reactive({
   id: 0,
@@ -190,27 +193,38 @@ const closeDialog = () => {
 const handleSubmit = async () => {
   if (!formRef.value?.validate()) return
 
-  saving.value = true
+  showOverlay(isEdit.value ? 'Atualizando categoria...' : 'Criando categoria...')
+  
+  // Pequeno delay para garantir que o loader apareça
+  await new Promise(resolve => setTimeout(resolve, 100))
+
   try {
     if (isEdit.value) {
       await adminCategoryService.update(form.id, {
         name: form.name,
         type: form.type,
       })
-      showSnackbar('Categoria atualizada com sucesso!', 'success')
     } else {
       await adminCategoryService.create({
         name: form.name,
         type: form.type,
       })
-      showSnackbar('Categoria criada com sucesso!', 'success')
     }
+    
     closeDialog()
     await loadCategories()
+    
+    // Mostrar snackbar após o loader ser escondido
+    hideLoader()
+    setTimeout(() => {
+      showSnackbar(isEdit.value ? 'Categoria atualizada com sucesso!' : 'Categoria criada com sucesso!', 'success')
+    }, 200)
+    
   } catch (error: any) {
-    showSnackbar(error?.response?.data?.message || 'Erro ao salvar categoria', 'error')
-  } finally {
-    saving.value = false
+    hideLoader()
+    setTimeout(() => {
+      showSnackbar(error?.response?.data?.message || 'Erro ao salvar categoria', 'error')
+    }, 200)
   }
 }
 
@@ -222,16 +236,27 @@ const confirmDelete = (category: Category) => {
 const handleDelete = async () => {
   if (!categoryToDelete.value) return
 
-  deleting.value = true
+  showOverlay('Excluindo categoria...')
+  
+  // Pequeno delay para garantir que o loader apareça
+  await new Promise(resolve => setTimeout(resolve, 100))
+  
   try {
     await adminCategoryService.delete(categoryToDelete.value.id)
-    showSnackbar('Categoria excluída com sucesso!', 'success')
     deleteDialog.value = false
     await loadCategories()
+    
+    // Mostrar snackbar após o loader ser escondido
+    hideLoader()
+    setTimeout(() => {
+      showSnackbar('Categoria excluída com sucesso!', 'success')
+    }, 200)
+    
   } catch (error: any) {
-    showSnackbar(error?.response?.data?.message || 'Erro ao excluir categoria', 'error')
-  } finally {
-    deleting.value = false
+    hideLoader()
+    setTimeout(() => {
+      showSnackbar(error?.response?.data?.message || 'Erro ao excluir categoria', 'error')
+    }, 200)
   }
 }
 
@@ -255,4 +280,32 @@ onMounted(() => {
   loadCategories()
 })
 </script>
+
+<style scoped>
+.cyberpunk-btn {
+  position: relative;
+  overflow: hidden;
+  transition: all 0.3s ease;
+}
+
+.cyberpunk-btn::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(0, 255, 255, 0.2), transparent);
+  transition: left 0.5s ease;
+}
+
+.cyberpunk-btn:hover::before {
+  left: 100%;
+}
+
+.cyberpunk-btn:hover {
+  box-shadow: 0 0 15px rgba(0, 255, 255, 0.4);
+  transform: translateY(-1px);
+}
+</style>
 

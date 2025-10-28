@@ -46,13 +46,20 @@
             type="submit"
             color="primary"
             size="large"
-            :disabled="!formIsValid"
-            :loading="isLoading"
+            :disabled="!formIsValid || isLoading"
             block
             variant="elevated"
+            class="login-btn"
           >
-            <v-icon start>mdi-login</v-icon>
-            INICIAR SESSÃO
+            <CyberpunkLoader 
+              v-if="isLoading" 
+              type="button" 
+              size="small"
+            />
+            <template v-else>
+              <v-icon start>mdi-login</v-icon>
+              INICIAR SESSÃO
+            </template>
           </v-btn>
         </v-form>
 
@@ -69,6 +76,7 @@
 <script setup lang="ts">
 import { ref, reactive } from 'vue'
 import { useLogin } from './composables/useLogin'
+import CyberpunkLoader from '@/components/CyberpunkLoader.vue'
 
 const form = reactive({ email: '', password: '' })
 const formRef = ref()
@@ -156,5 +164,25 @@ const handleLogin = async () => {
   50% {
     filter: drop-shadow(0 0 30px var(--neon-cyan));
   }
+}
+
+.login-btn {
+  position: relative;
+  overflow: hidden;
+}
+
+.login-btn::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(0, 255, 255, 0.2), transparent);
+  transition: left 0.5s ease;
+}
+
+.login-btn:hover::before {
+  left: 100%;
 }
 </style>

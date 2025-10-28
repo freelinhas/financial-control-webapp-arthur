@@ -71,12 +71,20 @@
           <v-icon class="mr-2">mdi-history</v-icon>
           Últimas Transações
         </h2>
+        <div v-if="loading" class="table-loading">
+          <CyberpunkLoader 
+            type="skeleton" 
+            :skeleton-count="5"
+            message="Carregando transações..."
+          />
+        </div>
+        
         <v-data-table-server
+          v-else
           v-model:page="page"
           v-model:items-per-page="itemsPerPage"
           :items="transactions"
           :loading="loading"
-          @update:options="loadTransactions"
           :headers="headers"
           :items-length="total"
           :items-per-page-options="[5, 10, 15]"
@@ -107,21 +115,14 @@ import { useRouter } from 'vue-router';
 import { useDashboard } from './composables/useDashboard';
 import { usePaginatedTransactions } from './composables/usePaginatedTransactions'
 import SpendingPieChart from './components/SpendingPieChart.vue';
+import CyberpunkLoader from '@/components/CyberpunkLoader.vue';
 
 const router = useRouter();
 const { summary, loadDashboard } = useDashboard();
-const { transactions, total, itemsPerPage, sortBy, page, load } = usePaginatedTransactions();
-
-const loading = ref(false)
+const { transactions, total, itemsPerPage, sortBy, page, load, loading } = usePaginatedTransactions();
 
 const goToAdmin = () => {
   router.push('/admin');
-}
-
-const loadTransactions = async () => {
-  loading.value = true;
-  await load();
-  loading.value = false;
 }
 
 const formatValue = (value: number) => {
@@ -157,6 +158,13 @@ onMounted(() => {
 <style scoped>
 .neon-pulse {
   animation: neonPulse 3s ease-in-out infinite;
+}
+
+.table-loading {
+  padding: 20px;
+  background: rgba(0, 0, 0, 0.3);
+  border-radius: 8px;
+  border: 1px solid rgba(0, 255, 255, 0.2);
 }
 </style>
 
