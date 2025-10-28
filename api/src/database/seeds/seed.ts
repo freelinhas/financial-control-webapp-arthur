@@ -23,6 +23,10 @@ export async function runSeed(dataSource: DataSource) {
       where: { email: 'lukkascomics@gmail.com' },
     });
 
+    let user2 = await userRepo.findOne({
+      where: { email: 'martinsgabrielli.ri@outlook.com' },
+    });
+
     if (!user) {
       const hashedPassword = await bcrypt.hash('97322607l', 10);
       user = userRepo.create({
@@ -35,6 +39,20 @@ export async function runSeed(dataSource: DataSource) {
       console.log('   ✅ Usuário criado: lukkascomics@gmail.com');
     } else {
       console.log('   ℹ️  Usuário já existe: lukkascomics@gmail.com');
+    }
+
+    if (!user2) {
+      const hashedPassword = await bcrypt.hash('97322607l', 10);
+      user2 = userRepo.create({
+        name: 'Gabrielli',
+        email: 'martinsgabrielli.ri@outlook.com',
+        password: hashedPassword,
+        isAdmin: false,
+      });
+      await userRepo.save(user2);
+      console.log('   ✅ Usuário criado: martinsgabrielli.ri@outlook.com');
+    } else {
+      console.log('   ℹ️  Usuário já existe: martinsgabrielli.ri@outlook.com');
     }
 
     // ========================================
