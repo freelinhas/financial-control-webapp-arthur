@@ -35,6 +35,8 @@ export const adminTransactionService = {
     limit: number
     sortBy?: string
     sortOrder?: 'ASC' | 'DESC'
+    month?: number
+    year?: number
   }) {
     const response = await api.get<{ data: Transaction[]; total: number }>('/transactions', {
       params,

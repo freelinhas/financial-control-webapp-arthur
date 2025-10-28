@@ -46,7 +46,7 @@ export class CategoryService {
     return this.categoryRepo.delete(id);
   }
 
-  async getCategoriesWithTotals(): Promise<{ name: string; type: string; total: number }[]> {
+  async getCategoriesWithTotals(userId: number): Promise<{ name: string; type: string; total: number }[]> {
   const categories = await this.categoryRepo.find()
 
   const result = await Promise.all(
@@ -56,6 +56,7 @@ export class CategoryService {
         .select('SUM(transaction.value)', 'sum')
         .where('transaction.categoryId = :categoryId', { categoryId: category.id })
         .andWhere('transaction.type = :type', { type: category.type })
+        .andWhere('transaction.userId = :userId', { userId })
         .getRawOne()
 
       return {

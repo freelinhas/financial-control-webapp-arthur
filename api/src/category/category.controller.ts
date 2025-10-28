@@ -2,6 +2,7 @@ import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/commo
 import { CategoryService } from './category.service';
 import { CreateCategoryDto } from './dto/create-category.dto';
 import { UpdateCategoryDto } from './dto/update-category.dto';
+import { UserId } from '../common/decorators/user-id.decorator';
 
 @Controller('categories')
 export class CategoryController {
@@ -18,8 +19,8 @@ export class CategoryController {
   }
 
   @Get('/totals')
-  getCategoriesWithTotals() {
-    return this.categoryService.getCategoriesWithTotals();
+  getCategoriesWithTotals(@UserId() userId: number) {
+    return this.categoryService.getCategoriesWithTotals(userId);
   }
 
   @Get(':id')

@@ -4,7 +4,7 @@
       <v-col cols="12">
         <div class="d-flex justify-space-between align-center">
           <div>
-            <h1 class="text-h4 font-weight-bold mb-2 neon-pulse">
+            <h1 class="text-h4 font-weight-bold mb-2 neon-pulse title-main">
               <v-icon size="32" class="mr-2">mdi-monitor-dashboard</v-icon>
               DASHBOARD FINANCEIRO
             </h1>
@@ -12,15 +12,26 @@
               Visão geral do seu controle financeiro
             </p>
           </div>
-          <v-btn
-            color="secondary"
-            class="mb-6"
-            prepend-icon="mdi-cog"
-            variant="elevated"
-            @click="goToAdmin"
-          >
-            Painel Admin
-          </v-btn>
+          <div class="d-flex">
+            <v-btn
+              color="secondary"
+              class="mb-6 mr-5"
+              prepend-icon="mdi-cog"
+              variant="elevated"
+              @click="goToAdmin"
+            >
+              Painel Admin
+            </v-btn>
+            <v-btn
+              color="red"
+              class="mb-6"
+              prepend-icon="mdi-logout"
+              variant="elevated"
+              @click="userLogout"
+            >
+              Logout
+            </v-btn>
+          </div>
         </div>
       </v-col>
 
@@ -67,10 +78,46 @@
 
     <v-row class="mt-10">
       <v-col cols="12">
-        <h2 class="text-h5 font-weight-bold mb-6">
-          <v-icon class="mr-2">mdi-history</v-icon>
-          Últimas Transações
-        </h2>
+        <div class="d-flex justify-space-between align-center mb-6">
+          <h2 class="text-h5 font-weight-bold title-main">
+            <v-icon class="mr-2">mdi-history</v-icon>
+            Últimas Transações
+          </h2>
+          
+          <!-- Filtros de Data -->
+          <div class="d-flex align-center gap-3">
+            <v-select
+              v-model="selectedMonth"
+              :items="monthOptions"
+              label="Mês"
+              variant="outlined"
+              density="compact"
+              style="min-width: 120px;"
+              clearable
+              @update:model-value="applyFilters"
+            />
+            <v-select
+              v-model="selectedYear"
+              :items="yearOptions"
+              label="Ano"
+              variant="outlined"
+              density="compact"
+              style="min-width: 100px;"
+              clearable
+              @update:model-value="applyFilters"
+            />
+            <v-btn
+              v-if="selectedMonth || selectedYear"
+              color="secondary"
+              variant="outlined"
+              size="small"
+              @click="clearFilters"
+              icon="mdi-filter-remove"
+              class="ml-2"
+            >
+            </v-btn>
+          </div>
+        </div>
         <div v-if="loading" class="table-loading">
           <CyberpunkLoader 
             type="skeleton" 
@@ -98,6 +145,11 @@
           <template v-slot:item.value="{ item }">
             {{ formatValue(Number((item as any).value)) }}
           </template>
+          <template v-slot:item.category="{ item }">
+            <v-chip color="primary" variant="outlined" size="small">
+              {{ (item as any).category.name }}
+            </v-chip>
+          </template>
           <template v-slot:item.type="{ item }">
             <v-chip :color="(item as any).type === 'ENTRY' ? 'green' : 'red'" dark>
               {{ (item as any).type === 'ENTRY' ? 'Entrada' : 'Saída' }}
@@ -110,7 +162,7 @@
 </template>
 
 <script setup lang="ts">
-import { onMounted, ref } from 'vue';
+import { onMounted, ref, computed } from 'vue';
 import { useRouter } from 'vue-router';
 import { useDashboard } from './composables/useDashboard';
 import { usePaginatedTransactions } from './composables/usePaginatedTransactions'
@@ -119,10 +171,59 @@ import CyberpunkLoader from '@/components/CyberpunkLoader.vue';
 
 const router = useRouter();
 const { summary, loadDashboard } = useDashboard();
-const { transactions, total, itemsPerPage, sortBy, page, load, loading } = usePaginatedTransactions();
+const { transactions, total, itemsPerPage, sortBy, page, load, loading, setDateFilter, clearDateFilter } = usePaginatedTransactions();
+
+// Filtros de data
+const selectedMonth = ref<number | null>(null);
+const selectedYear = ref<number | null>(null);
+
+// Opções para os selects
+const monthOptions = [
+  { title: 'Janeiro', value: 1 },
+  { title: 'Fevereiro', value: 2 },
+  { title: 'Março', value: 3 },
+  { title: 'Abril', value: 4 },
+  { title: 'Maio', value: 5 },
+  { title: 'Junho', value: 6 },
+  { title: 'Julho', value: 7 },
+  { title: 'Agosto', value: 8 },
+  { title: 'Setembro', value: 9 },
+  { title: 'Outubro', value: 10 },
+  { title: 'Novembro', value: 11 },
+  { title: 'Dezembro', value: 12 },
+];
+
+const yearOptions = computed(() => {
+  const currentYear = new Date().getFullYear();
+  const years = [];
+  for (let i = currentYear; i >= currentYear - 5; i--) {
+    years.push({ title: i.toString(), value: i });
+  }
+  return years;
+});
+
+const applyFilters = () => {
+  setDateFilter(selectedMonth.value || undefined, selectedYear.value || undefined);
+  loadDashboard(selectedMonth.value || undefined, selectedYear.value || undefined);
+};
+
+const clearFilters = () => {
+  selectedMonth.value = null;
+  selectedYear.value = null;
+  clearDateFilter();
+  loadDashboard();
+};
 
 const goToAdmin = () => {
   router.push('/admin');
+}
+
+const userLogout = () => {
+  router.push('/login')
+
+  localStorage.removeItem('token')
+  localStorage.removeItem('user')
+  sessionStorage.clear()
 }
 
 const formatValue = (value: number) => {
@@ -144,10 +245,11 @@ const formatDate = (date: string) => {
 }
 
 const headers = [
-  { title: 'Descrição', key: 'description' },
-  { title: 'Valor', key: 'value' },
-  { title: 'Tipo', key: 'type' },
-  { title: 'Data', key: 'date' },
+  { title: 'Descrição', key: 'description', sortable: true },
+  { title: 'Valor', key: 'value', sortable: true },
+  { title: 'Tipo', key: 'type', sortable: true },
+  { title: 'Categoria', key: 'category', sortable: false },
+  { title: 'Data', key: 'date', sortable: true },
 ]
 
 onMounted(() => {

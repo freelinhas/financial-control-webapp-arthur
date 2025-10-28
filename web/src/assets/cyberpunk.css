@@ -15,7 +15,7 @@
   --surface-light: #1e2852;
 }
 
-/* Background principal com gradiente */
+/* Background principal com wallpaper e blur */
 body {
   background: linear-gradient(135deg, #0a0e27 0%, #1a1f4d 100%);
   background-attachment: fixed;
@@ -23,7 +23,8 @@ body {
   overflow-x: hidden;
 }
 
-/* Grid pattern cyberpunk no fundo */
+/* Wallpaper de fundo - Substitua a URL pela sua imagem */
+/* Para trocar: substitua a propriedade background-image por: url('caminho/para/sua/imagem.jpg') */
 body::before {
   content: '';
   position: fixed;
@@ -31,16 +32,14 @@ body::before {
   left: 0;
   width: 100%;
   height: 100%;
-  background-image: 
-    linear-gradient(var(--neon-cyan) 1px, transparent 1px),
-    linear-gradient(90deg, var(--neon-cyan) 1px, transparent 1px);
-  background-size: 50px 50px;
-  opacity: 0.03;
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  opacity: 0.3;
   pointer-events: none;
-  z-index: 0;
 }
 
-/* Efeito de scanlines */
+/* Blur overlay */
 body::after {
   content: '';
   position: fixed;
@@ -48,21 +47,10 @@ body::after {
   left: 0;
   width: 100%;
   height: 100%;
-  background: repeating-linear-gradient(
-    0deg,
-    rgba(0, 0, 0, 0.15),
-    rgba(0, 0, 0, 0.15) 1px,
-    transparent 1px,
-    transparent 2px
-  );
+  background: rgba(10, 14, 39, 0.4);
+  backdrop-filter: blur(2px);
   pointer-events: none;
   z-index: 1;
-  animation: scanlines 10s linear infinite;
-}
-
-@keyframes scanlines {
-  0% { transform: translateY(0); }
-  100% { transform: translateY(10px); }
 }
 
 /* App container */
@@ -71,33 +59,32 @@ body::after {
   z-index: 2;
 }
 
-/* Títulos com efeito neon */
+/* Títulos com efeito neon muito suavizado */
 h1, h2, h3, h4, h5, h6 {
   text-shadow: 
-    0 0 10px var(--neon-cyan),
-    0 0 20px var(--neon-cyan),
-    0 0 30px var(--neon-cyan);
+    0 0 3px var(--neon-cyan),
+    0 0 6px var(--neon-cyan);
   font-weight: 700 !important;
   letter-spacing: 1px;
 }
 
-/* Cards com bordas neon e backdrop blur */
+/* Cards com bordas neon e backdrop blur suavizado */
 .v-card {
   background: rgba(20, 27, 61, 0.85) !important;
-  backdrop-filter: blur(10px);
+  backdrop-filter: blur(5px);
   border: 1px solid rgba(0, 255, 255, 0.2) !important;
   box-shadow: 
-    0 0 20px rgba(0, 255, 255, 0.15),
-    inset 0 0 20px rgba(0, 255, 255, 0.05) !important;
+    0 0 8px rgba(0, 255, 255, 0.08),
+    inset 0 0 8px rgba(0, 255, 255, 0.03) !important;
   transition: all 0.3s ease;
 }
 
 .v-card:hover {
-  border-color: rgba(0, 255, 255, 0.5) !important;
+  border-color: rgba(0, 255, 255, 0.4) !important;
   box-shadow: 
-    0 0 30px rgba(0, 255, 255, 0.3),
-    inset 0 0 30px rgba(0, 255, 255, 0.1) !important;
-  transform: translateY(-2px);
+    0 0 12px rgba(0, 255, 255, 0.15),
+    inset 0 0 12px rgba(0, 255, 255, 0.05) !important;
+  transform: translateY(-1px);
 }
 
 /* Botões com efeito neon */
@@ -130,28 +117,28 @@ h1, h2, h3, h4, h5, h6 {
 
 .v-btn--variant-elevated {
   box-shadow: 
-    0 0 15px currentColor,
-    0 5px 15px rgba(0, 0, 0, 0.3) !important;
+    0 0 3px currentColor,
+    0 3px 3px rgba(0, 0, 0, 0.2) !important;
 }
 
 .v-btn--variant-elevated:hover {
   box-shadow: 
-    0 0 25px currentColor,
-    0 8px 25px rgba(0, 0, 0, 0.4) !important;
-  transform: translateY(-2px);
+    0 0 8px currentColor,
+    0 4px 8px rgba(0, 0, 0, 0.25) !important;
+  transform: translateY(-1px);
 }
 
-/* Chips com brilho neon */
+/* Chips com brilho neon suavizado */
 .v-chip {
   font-weight: 600;
-  box-shadow: 0 0 10px currentColor;
+  box-shadow: 0 0 5px currentColor;
   border: 1px solid currentColor;
 }
 
-/* Data tables com estilo cyberpunk */
+/* Data tables com estilo cyberpunk suavizado */
 .v-data-table {
   background: rgba(20, 27, 61, 0.6) !important;
-  backdrop-filter: blur(10px);
+  backdrop-filter: blur(5px);
 }
 
 .v-data-table .v-data-table__th {
@@ -186,7 +173,7 @@ h1, h2, h3, h4, h5, h6 {
 
 .v-tab--selected {
   color: var(--neon-cyan) !important;
-  text-shadow: 0 0 10px var(--neon-cyan);
+  text-shadow: 0 0 5px var(--neon-cyan);
 }
 
 .v-tab:hover {
@@ -201,13 +188,13 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 .v-field:hover {
-  border-color: rgba(0, 255, 255, 0.5) !important;
-  box-shadow: 0 0 15px rgba(0, 255, 255, 0.2) !important;
+  border-color: rgba(0, 255, 255, 0.4) !important;
+  box-shadow: 0 0 8px rgba(0, 255, 255, 0.1) !important;
 }
 
 .v-field--focused {
   border-color: var(--neon-cyan) !important;
-  box-shadow: 0 0 20px rgba(0, 255, 255, 0.4) !important;
+  box-shadow: 0 0 10px rgba(0, 255, 255, 0.2) !important;
 }
 
 .v-label {
@@ -238,13 +225,13 @@ h1, h2, h3, h4, h5, h6 {
 .v-dialog .v-card {
   border: 2px solid var(--neon-cyan);
   box-shadow: 
-    0 0 40px rgba(0, 255, 255, 0.4),
-    inset 0 0 40px rgba(0, 255, 255, 0.1) !important;
+    0 0 15px rgba(0, 255, 255, 0.2),
+    inset 0 0 15px rgba(0, 255, 255, 0.05) !important;
 }
 
 .v-snackbar__wrapper {
   border: 1px solid currentColor;
-  box-shadow: 0 0 20px currentColor;
+  box-shadow: 0 0 8px currentColor;
 }
 
 /* Cores especiais para cards de resumo */
@@ -263,23 +250,51 @@ h1, h2, h3, h4, h5, h6 {
   border-color: var(--neon-pink) !important;
 }
 
-/* Animação de pulso para elementos importantes */
+/* Animação de pulso muito suavizada para elementos importantes */
 @keyframes neonPulse {
   0%, 100% {
     text-shadow: 
-      0 0 10px currentColor,
-      0 0 20px currentColor;
+      0 0 3px currentColor,
+      0 0 5px currentColor;
   }
   50% {
     text-shadow: 
-      0 0 20px currentColor,
-      0 0 30px currentColor,
-      0 0 40px currentColor;
+      0 0 5px currentColor,
+      0 0 8px currentColor,
+      0 0 10px currentColor;
   }
 }
 
+/* Classe específica para títulos principais - sem blur excessivo */
 .neon-pulse {
   animation: neonPulse 2s ease-in-out infinite;
+}
+
+/* Versão mais suave para títulos principais */
+.title-main {
+  text-shadow: 
+    0 0 2px var(--neon-cyan),
+    0 0 4px var(--neon-cyan) !important;
+  font-weight: 700 !important;
+  letter-spacing: 1px;
+}
+
+.title-main.neon-pulse {
+  animation: neonPulseSoft 2s ease-in-out infinite;
+}
+
+@keyframes neonPulseSoft {
+  0%, 100% {
+    text-shadow: 
+      0 0 2px currentColor,
+      0 0 4px currentColor;
+  }
+  50% {
+    text-shadow: 
+      0 0 4px currentColor,
+      0 0 6px currentColor,
+      0 0 8px currentColor;
+  }
 }
 
 /* Container com efeito de hologram */
@@ -301,11 +316,11 @@ h1, h2, h3, h4, h5, h6 {
 ::-webkit-scrollbar-thumb {
   background: linear-gradient(180deg, var(--neon-cyan) 0%, var(--neon-magenta) 100%);
   border-radius: 5px;
-  box-shadow: 0 0 10px var(--neon-cyan);
+  box-shadow: 0 0 5px var(--neon-cyan);
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  box-shadow: 0 0 20px var(--neon-cyan);
+  box-shadow: 0 0 8px var(--neon-cyan);
 }
 
 /* Loading overlay */
@@ -314,7 +329,7 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 .v-progress-circular {
-  filter: drop-shadow(0 0 10px currentColor);
+  filter: drop-shadow(0 0 5px currentColor);
 }
 
 /* Texto com efeito glitch ocasional */
@@ -350,25 +365,25 @@ h1, h2, h3, h4, h5, h6 {
   padding-left: calc(16px - 3px);
 }
 
-/* Dividers com brilho */
+/* Dividers com brilho suavizado */
 .v-divider {
   border-color: rgba(0, 255, 255, 0.2) !important;
-  box-shadow: 0 0 5px rgba(0, 255, 255, 0.3);
+  box-shadow: 0 0 3px rgba(0, 255, 255, 0.2);
 }
 
-/* Badge com efeito neon */
+/* Badge com efeito neon suavizado */
 .v-badge__badge {
-  box-shadow: 0 0 10px currentColor;
+  box-shadow: 0 0 5px currentColor;
   font-weight: 700;
 }
 
-/* Tooltip */
+/* Tooltip suavizado */
 .v-tooltip .v-overlay__content {
   background: rgba(0, 255, 255, 0.95) !important;
   color: var(--bg-dark) !important;
   font-weight: 600;
   border: 1px solid var(--neon-cyan);
-  box-shadow: 0 0 20px var(--neon-cyan);
+  box-shadow: 0 0 8px var(--neon-cyan);
 }
 
 /* Animação de entrada para cards */
@@ -394,14 +409,14 @@ h1, h2, h3, h4, h5, h6 {
   margin-bottom: 12px !important;
 }
 
-/* Icons com glow */
+/* Icons com glow suavizado */
 .v-icon {
-  filter: drop-shadow(0 0 5px currentColor);
+  filter: drop-shadow(0 0 3px currentColor);
   transition: filter 0.3s ease;
 }
 
 .v-icon:hover {
-  filter: drop-shadow(0 0 10px currentColor);
+  filter: drop-shadow(0 0 6px currentColor);
 }
 
 /* Texto de valores monetários */

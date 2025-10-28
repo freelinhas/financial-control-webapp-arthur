@@ -9,6 +9,8 @@ export const usePaginatedTransactions = () => {
   const page = ref(1)
   const itemsPerPage = ref(10)
   const sortBy = ref([{ key: 'date', order: 'desc' }])
+  const month = ref<number | undefined>(undefined)
+  const year = ref<number | undefined>(undefined)
 
   const load = async () => {
     loading.value = true
@@ -18,7 +20,9 @@ export const usePaginatedTransactions = () => {
         page.value,
         itemsPerPage.value,
         sort.key,
-        sort.order.toUpperCase()
+        sort.order.toUpperCase(),
+        month.value,
+        year.value
       )
 
       transactions.value = res.data
@@ -30,7 +34,19 @@ export const usePaginatedTransactions = () => {
     }
   }
 
-  watch([page, itemsPerPage, sortBy], load, { immediate: true })
+  const setDateFilter = (newMonth?: number, newYear?: number) => {
+    month.value = newMonth
+    year.value = newYear
+    page.value = 1 // Reset page when filtering
+  }
+
+  const clearDateFilter = () => {
+    month.value = undefined
+    year.value = undefined
+    page.value = 1
+  }
+
+  watch([page, itemsPerPage, sortBy, month, year], load, { immediate: true })
 
   return {
     transactions,
@@ -38,7 +54,11 @@ export const usePaginatedTransactions = () => {
     page,
     itemsPerPage,
     sortBy,
+    month,
+    year,
     loading,
     load,
+    setDateFilter,
+    clearDateFilter,
   }
 }

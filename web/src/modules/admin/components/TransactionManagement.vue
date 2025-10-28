@@ -8,6 +8,40 @@
     </v-card-title>
 
     <v-card-text>
+      <!-- Filtros de Data -->
+      <div class="d-flex align-center gap-3 mb-4">
+        <v-select
+          v-model="selectedMonth"
+          :items="monthOptions"
+          label="Mês"
+          variant="outlined"
+          density="compact"
+          style="min-width: 120px;"
+          clearable
+          @update:model-value="applyFilters"
+        />
+        <v-select
+          v-model="selectedYear"
+          :items="yearOptions"
+          label="Ano"
+          variant="outlined"
+          density="compact"
+          style="min-width: 100px;"
+          clearable
+          @update:model-value="applyFilters"
+        />
+        <v-btn
+          v-if="selectedMonth || selectedYear"
+          color="secondary"
+          variant="outlined"
+          size="small"
+          @click="clearFilters"
+          icon="mdi-filter-remove"
+          class="ml-2"
+        >
+        </v-btn>
+      </div>
+
       <v-data-table-server
         v-model:page="page"
         v-model:items-per-page="itemsPerPage"
@@ -177,6 +211,10 @@ const formIsValid = ref(false)
 const isEdit = ref(false)
 const transactionToDelete = ref<Transaction | null>(null)
 
+// Filtros de data
+const selectedMonth = ref<number | null>(null)
+const selectedYear = ref<number | null>(null)
+
 // Loader global para operações
 const { showOverlay, hideLoader } = useGlobalLoader()
 
@@ -208,6 +246,31 @@ const typeOptions = [
   { text: 'Saída', value: 'EXIT' },
 ]
 
+// Opções para os filtros de data
+const monthOptions = [
+  { title: 'Janeiro', value: 1 },
+  { title: 'Fevereiro', value: 2 },
+  { title: 'Março', value: 3 },
+  { title: 'Abril', value: 4 },
+  { title: 'Maio', value: 5 },
+  { title: 'Junho', value: 6 },
+  { title: 'Julho', value: 7 },
+  { title: 'Agosto', value: 8 },
+  { title: 'Setembro', value: 9 },
+  { title: 'Outubro', value: 10 },
+  { title: 'Novembro', value: 11 },
+  { title: 'Dezembro', value: 12 },
+]
+
+const yearOptions = computed(() => {
+  const currentYear = new Date().getFullYear()
+  const years = []
+  for (let i = currentYear; i >= currentYear - 5; i--) {
+    years.push({ title: i.toString(), value: i })
+  }
+  return years
+})
+
 const filteredCategories = computed(() => {
   return categories.value.filter((cat) => cat.type === form.type)
 })
@@ -225,6 +288,8 @@ const loadTransactions = async () => {
       limit: itemsPerPage.value,
       sortBy: 'date',
       sortOrder: 'DESC',
+      month: selectedMonth.value || undefined,
+      year: selectedYear.value || undefined,
     })
     transactions.value = result.data
     total.value = result.total
@@ -241,6 +306,18 @@ const loadCategories = async () => {
   } catch (error) {
     showSnackbar('Erro ao carregar categorias', 'error')
   }
+}
+
+const applyFilters = () => {
+  page.value = 1 // Reset page when filtering
+  loadTransactions()
+}
+
+const clearFilters = () => {
+  selectedMonth.value = null
+  selectedYear.value = null
+  page.value = 1
+  loadTransactions()
 }
 
 const openDialog = (transaction?: Transaction) => {

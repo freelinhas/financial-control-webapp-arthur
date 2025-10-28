@@ -69,6 +69,10 @@ export class TransactionService {
       const start = new Date(year, month - 1, 1)
       const end = new Date(year, month, 0, 23, 59, 59, 999)
       qb.andWhere('transaction.date BETWEEN :start AND :end', { start, end })
+    } else if (month && !year) {
+      qb.andWhere('EXTRACT(MONTH FROM transaction.date) = :month', { month })
+    } else if (year && !month) {
+      qb.andWhere('EXTRACT(YEAR FROM transaction.date) = :year', { year })
     }
 
     const total = await qb.clone().getCount()
@@ -139,6 +143,10 @@ export class TransactionService {
       const start = new Date(year, month - 1, 1);
       const end = new Date(year, month, 0, 23, 59, 59, 999);
       qb.andWhere('transaction.date BETWEEN :start AND :end', { start, end });
+    } else if (month && !year) {
+      qb.andWhere('EXTRACT(MONTH FROM transaction.date) = :month', { month });
+    } else if (year && !month) {
+      qb.andWhere('EXTRACT(YEAR FROM transaction.date) = :year', { year });
     }
   
     const transactions = await qb.getMany();

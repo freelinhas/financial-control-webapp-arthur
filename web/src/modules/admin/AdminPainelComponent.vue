@@ -4,7 +4,7 @@
       <v-col cols="12">
         <div class="d-flex justify-space-between align-center">
           <div>
-            <h1 class="text-h4 font-weight-bold mb-2 neon-pulse">
+            <h1 class="text-h4 font-weight-bold mb-2 neon-pulse title-main">
               <v-icon size="32" class="mr-2">mdi-security</v-icon>
               PAINEL ADMINISTRATIVO
             </h1>
@@ -12,15 +12,26 @@
               Sistema de Controle Financeiro v2.0
             </p>
           </div>
-          <v-btn
-            class="mb-4"
-            color="primary"
-            prepend-icon="mdi-arrow-left"
-            variant="outlined"
-            @click="goBack"
-          >
-            Voltar para Dashboard
-          </v-btn>
+          <div class="d-flex">
+            <v-btn
+              class="mb-4"
+              color="primary"
+              prepend-icon="mdi-arrow-left"
+              variant="outlined"
+              @click="goBack"
+            >
+              Voltar para Dashboard
+            </v-btn>
+            <v-btn
+              color="red"
+              class="mb-6 ml-5"
+              prepend-icon="mdi-logout"
+              variant="elevated"
+              @click="userLogout"
+            >
+              Logout
+            </v-btn>
+          </div>
         </div>
       </v-col>
     </v-row>
@@ -62,6 +73,13 @@ const tab = ref('categories')
 
 const goBack = () => {
   router.push('/home')
+}
+
+const userLogout = () => {
+  router.push('/login')
+  localStorage.removeItem('token')
+  localStorage.removeItem('user')
+  sessionStorage.clear()
 }
 </script>
 
