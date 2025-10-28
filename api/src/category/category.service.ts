@@ -22,7 +22,12 @@ export class CategoryService {
   }
 
   findAll() {
-    return this.categoryRepo.find();
+    return this.categoryRepo.find({
+      select: ['id', 'name', 'type', 'createdAt'],
+      order: {
+        createdAt: 'DESC',
+      },
+    });
   }
 
   async findOne(id: number) {

@@ -12,6 +12,7 @@
         :headers="headers"
         :items="categories"
         :loading="loading"
+        :sort-by="[{ key: 'createdAt', order: 'desc' }]"
         density="comfortable"
         class="elevation-1"
       >
@@ -19,6 +20,10 @@
           <v-chip :color="item.type === 'ENTRY' ? 'green' : 'red'" dark size="small">
             {{ item.type === 'ENTRY' ? 'Entrada' : 'Saída' }}
           </v-chip>
+        </template>
+
+        <template v-slot:item.createdAt="{ item }">
+          {{ formatDate(item.createdAt) }}
         </template>
 
         <template v-slot:item.actions="{ item }">
@@ -138,6 +143,7 @@ const headers = [
   { title: 'ID', key: 'id', sortable: true },
   { title: 'Nome', key: 'name', sortable: true },
   { title: 'Tipo', key: 'type', sortable: true },
+  { title: 'Criado em', key: 'createdAt', sortable: true },
   { title: 'Ações', key: 'actions', sortable: false, align: 'end' as const },
 ]
 
@@ -227,6 +233,16 @@ const handleDelete = async () => {
   } finally {
     deleting.value = false
   }
+}
+
+const formatDate = (date: string) => {
+  return new Date(date).toLocaleDateString('pt-BR', {
+    day: '2-digit',
+    month: '2-digit',
+    year: 'numeric',
+    hour: '2-digit',
+    minute: '2-digit',
+  })
 }
 
 const showSnackbar = (message: string, color: string) => {
