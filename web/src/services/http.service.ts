@@ -15,9 +15,12 @@ api.interceptors.request.use((config) => {
 api.interceptors.response.use(
   response => response,
   error => {
+    // Se receber 401 (não autorizado), faz logout automático
     if (error.response?.status === 401) {
       localStorage.removeItem('token')
-      window.location.href = '/login'
+      localStorage.removeItem('user')
+      sessionStorage.clear()
+      window.location.href = '/'
     }
     return Promise.reject(error)
   }
