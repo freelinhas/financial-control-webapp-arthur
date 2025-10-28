@@ -88,7 +88,7 @@
             {{ formatDate((item as any).date) }}
           </template>
           <template v-slot:item.value="{ item }">
-            R$ {{ (item as any).value.toFixed(2).replace('.', ',') }}
+            {{ formatValue(Number((item as any).value)) }}
           </template>
           <template v-slot:item.type="{ item }">
             <v-chip :color="(item as any).type === 'ENTRY' ? 'green' : 'red'" dark>
