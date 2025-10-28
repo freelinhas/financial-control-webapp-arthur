@@ -17,7 +17,7 @@
             class="mb-6"
             prepend-icon="mdi-cog"
             variant="elevated"
-            @click="$router.push('/admin')"
+            @click="goToAdmin"
           >
             Painel Admin
           </v-btn>
@@ -85,14 +85,14 @@
           class="elevation-1"
         >
           <template v-slot:item.date="{ item }">
-            {{ formatDate(item.date) }}
+            {{ formatDate((item as any).date) }}
           </template>
           <template v-slot:item.value="{ item }">
-            R$ {{ item.value.toFixed(2).replace('.', ',') }}
+            R$ {{ (item as any).value.toFixed(2).replace('.', ',') }}
           </template>
           <template v-slot:item.type="{ item }">
-            <v-chip :color="item.type === 'ENTRY' ? 'green' : 'red'" dark>
-              {{ item.type === 'ENTRY' ? 'Entrada' : 'Saída' }}
+            <v-chip :color="(item as any).type === 'ENTRY' ? 'green' : 'red'" dark>
+              {{ (item as any).type === 'ENTRY' ? 'Entrada' : 'Saída' }}
             </v-chip>
           </template>
         </v-data-table-server>
@@ -103,14 +103,20 @@
 
 <script setup lang="ts">
 import { onMounted, ref } from 'vue';
+import { useRouter } from 'vue-router';
 import { useDashboard } from './composables/useDashboard';
 import { usePaginatedTransactions } from './composables/usePaginatedTransactions'
 import SpendingPieChart from './components/SpendingPieChart.vue';
 
+const router = useRouter();
 const { summary, loadDashboard } = useDashboard();
 const { transactions, total, itemsPerPage, sortBy, page, load } = usePaginatedTransactions();
 
 const loading = ref(false)
+
+const goToAdmin = () => {
+  router.push('/admin');
+}
 
 const loadTransactions = async () => {
   loading.value = true;

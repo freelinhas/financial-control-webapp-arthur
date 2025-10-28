@@ -138,7 +138,7 @@ const headers = [
   { title: 'ID', key: 'id', sortable: true },
   { title: 'Nome', key: 'name', sortable: true },
   { title: 'Tipo', key: 'type', sortable: true },
-  { title: 'Ações', key: 'actions', sortable: false, align: 'end' },
+  { title: 'Ações', key: 'actions', sortable: false, align: 'end' as const },
 ]
 
 const typeOptions = [

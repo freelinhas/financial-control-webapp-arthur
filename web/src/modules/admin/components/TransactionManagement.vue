@@ -197,7 +197,7 @@ const headers = [
   { title: 'Tipo', key: 'type', sortable: true },
   { title: 'Categoria', key: 'category', sortable: false },
   { title: 'Data', key: 'date', sortable: true },
-  { title: 'Ações', key: 'actions', sortable: false, align: 'end' },
+  { title: 'Ações', key: 'actions', sortable: false, align: 'end' as const },
 ]
 
 const typeOptions = [

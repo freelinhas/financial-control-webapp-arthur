@@ -17,7 +17,7 @@
             color="primary"
             prepend-icon="mdi-arrow-left"
             variant="outlined"
-            @click="$router.push('/home')"
+            @click="goBack"
           >
             Voltar para Dashboard
           </v-btn>
@@ -40,29 +40,29 @@
       </v-tab>
     </v-tabs>
 
-    <v-window v-model="tab" class="mt-6">
-      <v-window-item value="categories">
-        <CategoryManagement />
-      </v-window-item>
-
-      <v-window-item value="transactions">
-        <TransactionManagement />
-      </v-window-item>
-
-      <v-window-item value="users">
-        <UserManagement />
-      </v-window-item>
-    </v-window>
+    <div class="mt-6">
+      <KeepAlive>
+        <CategoryManagement v-if="tab === 'categories'" />
+        <TransactionManagement v-else-if="tab === 'transactions'" />
+        <UserManagement v-else-if="tab === 'users'" />
+      </KeepAlive>
+    </div>
   </v-container>
 </template>
 
 <script setup lang="ts">
 import { ref } from 'vue'
+import { useRouter } from 'vue-router'
 import CategoryManagement from './components/CategoryManagement.vue'
 import TransactionManagement from './components/TransactionManagement.vue'
 import UserManagement from './components/UserManagement.vue'
 
+const router = useRouter()
 const tab = ref('categories')
+
+const goBack = () => {
+  router.push('/home')
+}
 </script>
 
 <style scoped>

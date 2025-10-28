@@ -109,7 +109,7 @@ const headers = [
   { title: 'Email', key: 'email', sortable: true },
   { title: 'Tipo', key: 'isAdmin', sortable: true },
   { title: 'Cadastrado em', key: 'createdAt', sortable: true },
-  { title: 'Ações', key: 'actions', sortable: false, align: 'end' },
+  { title: 'Ações', key: 'actions', sortable: false, align: 'end' as const },
 ]
 
 const loadUsers = async () => {
