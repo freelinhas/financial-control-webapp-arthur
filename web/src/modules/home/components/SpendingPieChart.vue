@@ -1,10 +1,10 @@
 <template>
-  <v-card class="pa-10 mt-15 cyberpunk-chart" elevation="2">
+  <v-card class="pa-6 mt-4" elevation="1">
     <div class="d-flex align-center mb-6">
-      <v-icon size="28" class="mr-3 neon-icon">mdi-chart-bar</v-icon>
-      <h1 class="text-h5 font-weight-bold cyberpunk-title">
-        ANÁLISE DE GASTOS POR CATEGORIA
-      </h1>
+      <v-icon size="24" class="mr-3">mdi-chart-bar</v-icon>
+      <h2 class="text-h5 font-weight-medium">
+        Análise de Gastos por Categoria
+      </h2>
     </div>
     
     <div class="chart-container">
@@ -14,15 +14,14 @@
     <!-- Estatísticas detalhadas -->
     <div class="mt-8">
       <div class="d-flex align-center justify-space-between mb-4">
-        <h3 class="text-h6 font-weight-bold cyberpunk-subtitle">
+        <h3 class="text-h6 font-weight-medium">
           <v-icon class="mr-2">mdi-chart-line</v-icon>
-          ESTATÍSTICAS DETALHADAS
+          Estatísticas Detalhadas
         </h3>
         <v-btn
           :icon="showDetails ? 'mdi-chevron-up' : 'mdi-chevron-down'"
           variant="text"
           size="small"
-          class="cyberpunk-toggle-btn"
           @click="toggleDetails"
           :title="showDetails ? 'Recolher estatísticas' : 'Expandir estatísticas'"
         >
@@ -70,18 +69,18 @@ const toggleDetails = () => {
 
 ChartJS.register(Title, Tooltip, Legend, BarElement, CategoryScale, LinearScale)
 
-// Paleta cyberpunk - tons de neon e escuros
-const cyberpunkPalette = [
-  '#00ffff', // Cyan neon
-  '#ff00ff', // Magenta neon
-  '#00ff00', // Verde neon
-  '#ffff00', // Amarelo neon
-  '#ff6600', // Laranja neon
-  '#6600ff', // Roxo neon
-  '#ff0066', // Rosa neon
-  '#00ff66', // Verde água
-  '#ff6600', // Laranja escuro
-  '#6666ff', // Azul neon
+// Paleta minimalista - tons suaves e profissionais
+const chartPalette = [
+  '#1976d2', // Azul principal
+  '#388e3c', // Verde
+  '#f57c00', // Laranja
+  '#7b1fa2', // Roxo
+  '#d32f2f', // Vermelho
+  '#0288d1', // Azul claro
+  '#689f38', // Verde claro
+  '#fbc02d', // Amarelo
+  '#5d4037', // Marrom
+  '#455a64', // Cinza azulado
 ]
 
 // Função para formatar valores monetários
@@ -102,7 +101,7 @@ const chartData = computed<ChartData<'bar'>>(() => {
 
   const labels = filteredCategories.map((c: any) => c.name)
   const data = filteredCategories.map((c: any) => c.total || 0)
-  const colors = filteredCategories.map((_, index) => cyberpunkPalette[index % cyberpunkPalette.length])
+  const colors = filteredCategories.map((_, index) => chartPalette[index % chartPalette.length])
 
   return {
     labels,
@@ -133,7 +132,7 @@ const detailedCategories = computed(() => {
     name: category.name,
     total: category.total || 0,
     percentage: totalExpenses > 0 ? ((category.total || 0) / totalExpenses * 100).toFixed(1) : '0.0',
-    color: cyberpunkPalette[index % cyberpunkPalette.length]
+    color: chartPalette[index % chartPalette.length]
   }))
 })
 
@@ -148,24 +147,24 @@ const chartOptions: ChartOptions<'bar'> = {
       display: false,
     },
     tooltip: {
-      backgroundColor: 'rgba(0, 0, 0, 0.9)',
-      titleColor: '#00ffff',
+      backgroundColor: 'rgba(0, 0, 0, 0.8)',
+      titleColor: '#ffffff',
       bodyColor: '#ffffff',
-      borderColor: '#00ffff',
+      borderColor: 'rgba(255, 255, 255, 0.2)',
       borderWidth: 1,
-      cornerRadius: 8,
+      cornerRadius: 6,
       displayColors: true,
       callbacks: {
         title: (context: any) => {
-          return `CATEGORIA: ${context[0].label}`
+          return `Categoria: ${context[0].label}`
         },
         label: (context: any) => {
           const value = context.parsed.y
           const total = context.dataset.data.reduce((a: number, b: number) => a + b, 0)
           const percentage = ((value / total) * 100).toFixed(1)
           return [
-            `VALOR: ${formatValue(value)}`,
-            `PERCENTUAL: ${percentage}%`
+            `Valor: ${formatValue(value)}`,
+            `Percentual: ${percentage}%`
           ]
         }
       }
@@ -174,25 +173,23 @@ const chartOptions: ChartOptions<'bar'> = {
   scales: {
     x: {
       grid: {
-        color: 'rgba(0, 255, 255, 0.1)'
+        color: 'rgba(0, 0, 0, 0.1)'
       },
       ticks: {
-        color: '#00ffff',
+        color: 'rgba(0, 0, 0, 0.7)',
         font: {
-          size: 12,
-          weight: 'bold'
+          size: 12
         }
       }
     },
     y: {
       grid: {
-        color: 'rgba(0, 255, 255, 0.1)'
+        color: 'rgba(0, 0, 0, 0.1)'
       },
       ticks: {
-        color: '#00ffff',
+        color: 'rgba(0, 0, 0, 0.7)',
         font: {
-          size: 12,
-          weight: 'bold'
+          size: 12
         },
         callback: function(value: any) {
           return formatValue(Number(value))
@@ -212,85 +209,9 @@ onMounted(() => {
 </script>
 
 <style scoped>
-.cyberpunk-chart {
-  background: linear-gradient(135deg, #0a0a0a 0%, #1a1a2e 50%, #16213e 100%);
-  border: 2px solid #00ffff;
-  border-radius: 12px;
-  box-shadow: 
-    0 0 20px rgba(0, 255, 255, 0.3),
-    inset 0 0 20px rgba(0, 255, 255, 0.1);
-  position: relative;
-  height: auto !important;
-  overflow: visible; /* Permitir que o conteúdo expanda */
-  min-height: auto; /* Altura dinâmica */
-  transition: all 0.3s ease; /* Transição suave */
-}
-
-.cyberpunk-chart::before {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background: 
-    linear-gradient(45deg, transparent 49%, rgba(0, 255, 255, 0.03) 50%, transparent 51%),
-    linear-gradient(-45deg, transparent 49%, rgba(0, 255, 255, 0.03) 50%, transparent 51%);
-  background-size: 20px 20px;
-  pointer-events: none;
-}
-
-.neon-icon {
-  color: #00ffff;
-  filter: drop-shadow(0 0 8px #00ffff);
-  animation: neonPulse 2s ease-in-out infinite alternate;
-}
-
-.cyberpunk-title {
-  color: #00ffff;
-  text-shadow: 0 0 10px #00ffff;
-  letter-spacing: 1px;
-  font-family: 'Courier New', monospace;
-}
-
-.cyberpunk-subtitle {
-  color: #ff00ff;
-  text-shadow: 0 0 8px #ff00ff;
-  letter-spacing: 0.5px;
-  font-family: 'Courier New', monospace;
-}
-
-.cyberpunk-toggle-btn {
-  color: #00ffff !important;
-  background: rgba(0, 255, 255, 0.1) !important;
-  border: 1px solid rgba(0, 255, 255, 0.3) !important;
-  border-radius: 8px !important;
-  transition: all 0.3s ease !important;
-  min-width: 40px !important;
-  height: 40px !important;
-}
-
-.cyberpunk-toggle-btn:hover {
-  background: rgba(0, 255, 255, 0.2) !important;
-  border-color: #00ffff !important;
-  box-shadow: 0 0 15px rgba(0, 255, 255, 0.4) !important;
-  transform: scale(1.05) !important;
-}
-
-.cyberpunk-toggle-btn .v-icon {
-  color: #00ffff !important;
-  filter: drop-shadow(0 0 4px #00ffff);
-  transition: transform 0.3s ease;
-}
-
-.cyberpunk-toggle-btn:hover .v-icon {
-  transform: scale(1.1);
-}
-
 .chart-container {
   height: 400px;
   position: relative;
-  z-index: 1;
 }
 
 .details-container {
@@ -298,68 +219,10 @@ onMounted(() => {
   transition: all 0.3s ease;
 }
 
-
-.category-card {
-  background: linear-gradient(135deg, rgba(0, 0, 0, 0.8) 0%, rgba(26, 26, 46, 0.8) 100%);
-  border: 1px solid rgba(0, 255, 255, 0.3);
-  border-radius: 8px;
-  transition: all 0.3s ease;
-  position: relative;
-  overflow: hidden;
-}
-
-.category-card:hover {
-  border-color: #00ffff;
-  box-shadow: 0 0 15px rgba(0, 255, 255, 0.4);
-  transform: translateY(-2px);
-}
-
-.category-card::before {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: -100%;
-  width: 100%;
-  height: 100%;
-  background: linear-gradient(90deg, transparent, rgba(0, 255, 255, 0.1), transparent);
-  transition: left 0.5s ease;
-}
-
-.category-card:hover::before {
-  left: 100%;
-}
-
-.category-indicator {
-  width: 12px;
-  height: 12px;
-  border-radius: 50%;
-  box-shadow: 0 0 10px currentColor;
-  animation: neonPulse 2s ease-in-out infinite alternate;
-}
-
-@keyframes neonPulse {
-  0% {
-    opacity: 0.8;
-    filter: brightness(1);
-  }
-  100% {
-    opacity: 1;
-    filter: brightness(1.2);
-  }
-}
-
 /* Responsividade */
 @media (max-width: 768px) {
-  .cyberpunk-chart {
-    padding: 16px;
-  }
-  
   .chart-container {
     height: 300px;
-  }
-  
-  .cyberpunk-title {
-    font-size: 1.2rem;
   }
 }
 </style>

@@ -1,5 +1,4 @@
 import './assets/main.css'
-import './assets/cyberpunk.css'
 import '@mdi/font/css/materialdesignicons.css'
 
 import { createApp } from 'vue'
@@ -11,6 +10,7 @@ import * as directives from 'vuetify/directives'
 
 import App from './App.vue'
 import router from './router'
+import { useThemeToggle } from './composables/useTheme'
 
 const vuetify = createVuetify({
   icons: {
@@ -19,20 +19,34 @@ const vuetify = createVuetify({
   components,
   directives,
   theme: {
-    defaultTheme: 'cyberpunk',
+    defaultTheme: 'light',
     themes: {
-      cyberpunk: {
+      light: {
+        dark: false,
+        colors: {
+          background: '#fafafa',
+          surface: '#ffffff',
+          primary: '#1976d2',
+          secondary: '#424242',
+          accent: '#82b1ff',
+          error: '#f44336',
+          info: '#2196f3',
+          success: '#4caf50',
+          warning: '#ff9800',
+        },
+      },
+      dark: {
         dark: true,
         colors: {
-          background: '#0a0e27',
-          surface: '#141b3d',
-          primary: '#00ffff', // Cyan neon
-          secondary: '#ff00ff', // Magenta neon
-          accent: '#ffff00', // Yellow neon
-          error: '#ff0055',
-          info: '#00d9ff',
-          success: '#00ff9f',
-          warning: '#ffaa00',
+          background: '#121212',
+          surface: '#1e1e1e',
+          primary: '#2196f3',
+          secondary: '#616161',
+          accent: '#64b5f6',
+          error: '#f44336',
+          info: '#2196f3',
+          success: '#4caf50',
+          warning: '#ff9800',
         },
       },
     },
@@ -40,11 +54,11 @@ const vuetify = createVuetify({
   defaults: {
     VBtn: {
       style: 'text-transform: none;',
-      rounded: 'lg',
+      rounded: 'md',
     },
     VCard: {
-      rounded: 'lg',
-      elevation: 2,
+      rounded: 'md',
+      elevation: 1,
     },
     VTextField: {
       variant: 'outlined',
@@ -61,5 +75,15 @@ const vuetify = createVuetify({
   },
 })
 
-createApp(App).use(vuetify).use(router).use(createPinia()).mount('#app')
+const app = createApp(App)
+app.use(vuetify)
+app.use(router)
+app.use(createPinia())
+
+// Carregar tema salvo após a criação do app
+app.mount('#app')
+
+// Carregar tema salvo após o mount
+const { loadSavedTheme } = useThemeToggle()
+loadSavedTheme()
 

@@ -4,14 +4,15 @@
       <v-col cols="12">
         <div class="d-flex justify-space-between align-center">
           <div>
-            <h1 class="text-h4 font-weight-bold mb-2 neon-pulse title-main">
+            <h1 class="text-h4 font-weight-bold mb-2">
               <v-icon size="32" class="mr-2">mdi-monitor-dashboard</v-icon>
-              DASHBOARD FINANCEIRO
+              Dashboard Financeiro
             </h1>
-            <p class="text-subtitle-1" style="color: var(--neon-cyan); opacity: 0.8;">
+            <p class="text-subtitle-1 text-medium-emphasis">
               Visão geral do seu controle financeiro
             </p>
           </div>
+          <ThemeToggle />
           <div class="d-flex">
             <v-btn
               color="secondary"
@@ -168,6 +169,7 @@ import { useDashboard } from './composables/useDashboard';
 import { usePaginatedTransactions } from './composables/usePaginatedTransactions'
 import SpendingPieChart from './components/SpendingPieChart.vue';
 import CyberpunkLoader from '@/components/CyberpunkLoader.vue';
+import ThemeToggle from '@/components/ThemeToggle.vue';
 
 const router = useRouter();
 const { summary, loadDashboard } = useDashboard();
@@ -258,15 +260,11 @@ onMounted(() => {
 </script>
 
 <style scoped>
-.neon-pulse {
-  animation: neonPulse 3s ease-in-out infinite;
-}
-
 .table-loading {
   padding: 20px;
-  background: rgba(0, 0, 0, 0.3);
+  background: rgba(0, 0, 0, 0.05);
   border-radius: 8px;
-  border: 1px solid rgba(0, 255, 255, 0.2);
+  border: 1px solid rgba(0, 0, 0, 0.1);
 }
 </style>
 

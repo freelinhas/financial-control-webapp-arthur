@@ -1,15 +1,15 @@
 <template>
-  <div v-if="visible" class="cyberpunk-loader" :class="loaderClass">
+  <div v-if="visible" class="modern-loader" :class="loaderClass">
     <!-- Overlay Loader -->
     <div v-if="type === 'overlay'" class="loader-overlay">
       <div class="loader-content">
-        <div class="cyberpunk-spinner">
+        <div class="modern-spinner">
           <div class="spinner-ring"></div>
           <div class="spinner-ring"></div>
           <div class="spinner-ring"></div>
         </div>
         <div class="loader-text">
-          <h3 class="cyberpunk-title">{{ message }}</h3>
+          <h3 class="loader-title">{{ message }}</h3>
           <div class="loading-dots">
             <span></span>
             <span></span>
@@ -21,7 +21,7 @@
 
     <!-- Inline Spinner -->
     <div v-else-if="type === 'spinner'" class="inline-spinner">
-      <div class="cyberpunk-spinner-small">
+      <div class="modern-spinner-small">
         <div class="spinner-ring-small"></div>
         <div class="spinner-ring-small"></div>
         <div class="spinner-ring-small"></div>
@@ -110,7 +110,7 @@ const loaderClass = computed(() => ({
   position: relative;
 }
 
-.cyberpunk-spinner {
+.modern-spinner {
   position: relative;
   width: 80px;
   height: 80px;
@@ -123,22 +123,22 @@ const loaderClass = computed(() => ({
   height: 100%;
   border: 3px solid transparent;
   border-radius: 50%;
-  animation: cyberpunkSpin 2s linear infinite;
+  animation: modernSpin 1.5s linear infinite;
 }
 
 .spinner-ring:nth-child(1) {
-  border-top-color: #00ffff;
+  border-top-color: #1976d2;
   animation-delay: 0s;
 }
 
 .spinner-ring:nth-child(2) {
-  border-right-color: #ff00ff;
-  animation-delay: 0.3s;
+  border-right-color: #2196f3;
+  animation-delay: 0.2s;
 }
 
 .spinner-ring:nth-child(3) {
-  border-bottom-color: #00ff00;
-  animation-delay: 0.6s;
+  border-bottom-color: #64b5f6;
+  animation-delay: 0.4s;
 }
 
 /* Inline Spinner */
@@ -148,7 +148,7 @@ const loaderClass = computed(() => ({
   gap: 12px;
 }
 
-.cyberpunk-spinner-small {
+.modern-spinner-small {
   position: relative;
   width: 24px;
   height: 24px;
@@ -160,29 +160,27 @@ const loaderClass = computed(() => ({
   height: 100%;
   border: 2px solid transparent;
   border-radius: 50%;
-  animation: cyberpunkSpin 1.5s linear infinite;
+  animation: modernSpin 1.5s linear infinite;
 }
 
 .spinner-ring-small:nth-child(1) {
-  border-top-color: #00ffff;
+  border-top-color: #1976d2;
   animation-delay: 0s;
 }
 
 .spinner-ring-small:nth-child(2) {
-  border-right-color: #ff00ff;
+  border-right-color: #2196f3;
   animation-delay: 0.2s;
 }
 
 .spinner-ring-small:nth-child(3) {
-  border-bottom-color: #00ff00;
+  border-bottom-color: #64b5f6;
   animation-delay: 0.4s;
 }
 
 .spinner-text {
-  color: #00ffff;
-  font-family: 'Courier New', monospace;
-  font-weight: bold;
-  text-shadow: 0 0 8px #00ffff;
+  color: #1976d2;
+  font-weight: 500;
 }
 
 /* Button Loader */
@@ -314,13 +312,10 @@ const loaderClass = computed(() => ({
 }
 
 /* Text Styles */
-.cyberpunk-title {
-  color: #00ffff;
-  font-family: 'Courier New', monospace;
-  font-weight: bold;
-  text-shadow: 0 0 10px #00ffff;
+.loader-title {
+  color: #1976d2;
+  font-weight: 600;
   margin-bottom: 16px;
-  letter-spacing: 1px;
 }
 
 .loading-dots {
@@ -346,7 +341,7 @@ const loaderClass = computed(() => ({
 }
 
 /* Animations */
-@keyframes cyberpunkSpin {
+@keyframes modernSpin {
   0% {
     transform: rotate(0deg);
   }
@@ -421,7 +416,7 @@ const loaderClass = computed(() => ({
     height: 60px;
   }
   
-  .cyberpunk-title {
+  .loader-title {
     font-size: 14px;
   }
 }
