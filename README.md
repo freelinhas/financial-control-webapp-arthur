@@ -8,7 +8,7 @@ Sistema de controle financeiro pessoal otimizado para mobile e PWA (Progressive 
 - **🔧 PWA**: Pode ser instalado como app nativo
 - **💾 SQLite Local**: Banco de dados local, sem necessidade de servidor
 - **🎯 Precisão Numérica**: Usa big.js (frontend) e decimal.js (backend)
-- **🎨 Tema Cyberpunk**: Interface moderna e futurista
+- **🎨 Tema Minimalista**: Interface moderna light/dark
 - **⚡ Sem Docker**: Execução direta, ideal para smartphones
 
 ## 🛠️ Tecnologias
@@ -140,7 +140,7 @@ const formatted = format(total) // "R$ 15,75"
 
 ## 🎨 Tema e Interface
 
-- **Tema Cyberpunk**: Cores neon e design futurista
+- **Tema light/dark**: Cores minimalisas
 - **Mobile First**: Interface otimizada para touch
 - **Responsivo**: Adapta-se a diferentes tamanhos de tela
 - **PWA**: Funciona offline e pode ser instalado
