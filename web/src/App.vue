@@ -1,7 +1,7 @@
 <template>
   <v-app>
-    <v-main>
-      <v-container>
+    <v-main class="mobile-main">
+      <v-container fluid class="pa-0">
         <RouterView />
       </v-container>
     </v-main>
@@ -16,6 +16,20 @@
     />
   </v-app>
 </template>
+
+<style scoped>
+.mobile-main {
+  min-height: 100vh;
+  min-height: 100dvh; /* Dynamic viewport height for mobile */
+}
+
+/* Garantir que o container seja full width em mobile */
+.v-container.fluid.pa-0 {
+  padding: 0 !important;
+  margin: 0 !important;
+  max-width: 100% !important;
+}
+</style>
 
 <script setup lang="ts">
 import CyberpunkLoader from '@/components/CyberpunkLoader.vue'

@@ -1,7 +1,7 @@
 export class TransactionResponseDto {
   id: number;
   description: string;
-  value: number;
+  value: string; // Usando string para precisão com decimal.js
   type: 'ENTRY' | 'EXIT';
   date: Date;
   userId: number;

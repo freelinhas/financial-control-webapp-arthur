@@ -21,12 +21,12 @@
 
 <script setup lang="ts">
 import { ref, reactive, watch, toRefs } from 'vue';
-// import { useCategories } from '@/modules/home/composables/useCategories';
+import { categoryService } from '@/modules/home/services/category.service';
 
-// const props = defineProps<{
-//   categoryId?: number
-//   onSuccess?: () => void
-// }>()
+const props = defineProps<{
+  categoryId?: number
+  onSuccess?: () => void
+}>()
 
 const form = reactive({
   name: '',
@@ -41,26 +41,26 @@ const rules = {
 }
 
 const loadCategory = async () => {
-  // if (!props.categoryId) return
+  if (!props.categoryId) return
   // const category = await getCategory(props.categoryId)
   // form.name = category.name
   // form.type = category.type
   isEdit.value = true
 }
 
-// const handleSubmit = async () => {
-//   if (!formRef.value?.validate()) return
+const handleSubmit = async () => {
+  if (!formRef.value?.validate()) return
 
-//   if (isEdit.value && props.categoryId) {
-//     await updateCategory(props.categoryId, form)
-//   } else {
-//     await createCategory(form)
-//   }
+  if (isEdit.value && props.categoryId) {
+    await categoryService.updateCategory(props.categoryId, form)
+  } else {
+    await categoryService.createCategory(form)
+  }
 
-//   props.onSuccess?.()
-// }
+  props.onSuccess?.()
+}
 
-// watch(() => props.categoryId, loadCategory, { immediate: true })
+watch(() => props.categoryId, loadCategory, { immediate: true })
 </script>
 
 <style scoped>

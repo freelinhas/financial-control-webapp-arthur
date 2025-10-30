@@ -10,14 +10,11 @@ dotenv.config();
 
 // Configuração do DataSource
 const AppDataSource = new DataSource({
-  type: 'postgres',
-  host: process.env.DB_HOST || 'localhost',
-  port: parseInt(process.env.DB_PORT || '5432'),
-  username: process.env.DB_USERNAME || 'postgres',
-  password: process.env.DB_PASSWORD || 'postgres',
-  database: process.env.DB_DATABASE || 'financial_control',
+  type: 'sqlite',
+  database: process.env.DB_DATABASE || './database.sqlite',
   entities: [User, Category, Transaction],
   synchronize: false, // Não alterar schema, apenas popular
+  logging: false,
 });
 
 async function bootstrap() {
@@ -26,7 +23,7 @@ async function bootstrap() {
   try {
     // Conectar ao banco
     await AppDataSource.initialize();
-    console.log('✅ Conectado ao PostgreSQL!\n');
+    console.log('✅ Conectado ao SQLite!\n');
 
     // Executar seed
     await runSeed(AppDataSource);

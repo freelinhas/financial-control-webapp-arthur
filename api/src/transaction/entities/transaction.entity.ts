@@ -19,8 +19,8 @@ export class Transaction {
   @Column()
   description: string;
 
-  @Column('decimal', { precision: 10, scale: 2 })
-  value: number;
+  @Column('text')
+  value: string; // Usando string para manter precisão com decimal.js
 
   @Column()
   type: TransactionType;

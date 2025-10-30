@@ -37,6 +37,28 @@ const vuetify = createVuetify({
       },
     },
   },
+  defaults: {
+    VBtn: {
+      style: 'text-transform: none;',
+      rounded: 'lg',
+    },
+    VCard: {
+      rounded: 'lg',
+      elevation: 2,
+    },
+    VTextField: {
+      variant: 'outlined',
+      density: 'comfortable',
+    },
+    VSelect: {
+      variant: 'outlined',
+      density: 'comfortable',
+    },
+    VTextarea: {
+      variant: 'outlined',
+      density: 'comfortable',
+    },
+  },
 })
 
 createApp(App).use(vuetify).use(router).use(createPinia()).mount('#app')

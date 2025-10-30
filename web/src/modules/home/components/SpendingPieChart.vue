@@ -55,6 +55,7 @@
 import { computed, onMounted, ref } from 'vue'
 import { Bar } from 'vue-chartjs'
 import { Chart as ChartJS, Title, Tooltip, Legend, BarElement, CategoryScale, LinearScale } from 'chart.js'
+import type { ChartData, ChartOptions } from 'chart.js'
 import { useCategories } from '../composables/useCategories'
 
 const { categories, loadCategories } = useCategories()
@@ -155,10 +156,10 @@ const chartOptions: ChartOptions<'bar'> = {
       cornerRadius: 8,
       displayColors: true,
       callbacks: {
-        title: (context) => {
+        title: (context: any) => {
           return `CATEGORIA: ${context[0].label}`
         },
-        label: (context) => {
+        label: (context: any) => {
           const value = context.parsed.y
           const total = context.dataset.data.reduce((a: number, b: number) => a + b, 0)
           const percentage = ((value / total) * 100).toFixed(1)
@@ -173,9 +174,7 @@ const chartOptions: ChartOptions<'bar'> = {
   scales: {
     x: {
       grid: {
-        color: 'rgba(0, 255, 255, 0.1)',
-        drawBorder: true,
-        borderColor: '#00ffff'
+        color: 'rgba(0, 255, 255, 0.1)'
       },
       ticks: {
         color: '#00ffff',
@@ -187,9 +186,7 @@ const chartOptions: ChartOptions<'bar'> = {
     },
     y: {
       grid: {
-        color: 'rgba(0, 255, 255, 0.1)',
-        drawBorder: true,
-        borderColor: '#00ffff'
+        color: 'rgba(0, 255, 255, 0.1)'
       },
       ticks: {
         color: '#00ffff',
@@ -197,7 +194,7 @@ const chartOptions: ChartOptions<'bar'> = {
           size: 12,
           weight: 'bold'
         },
-        callback: function(value) {
+        callback: function(value: any) {
           return formatValue(Number(value))
         }
       }

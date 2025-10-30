@@ -115,7 +115,7 @@ export async function runSeed(dataSource: DataSource) {
       // Entradas
       {
         description: 'Salário do mês',
-        value: 5000.00,
+        value: '5000.00',
         type: 'ENTRY' as const,
         date: new Date('2024-10-01'),
         user,
@@ -123,7 +123,7 @@ export async function runSeed(dataSource: DataSource) {
       },
       {
         description: 'Projeto freelance - Website',
-        value: 1500.00,
+        value: '1500.00',
         type: 'ENTRY' as const,
         date: new Date('2024-10-15'),
         user,
@@ -131,7 +131,7 @@ export async function runSeed(dataSource: DataSource) {
       },
       {
         description: 'Projeto freelance - Logo',
-        value: 800.00,
+        value: '800.00',
         type: 'ENTRY' as const,
         date: new Date('2024-10-20'),
         user,
@@ -141,7 +141,7 @@ export async function runSeed(dataSource: DataSource) {
       // Saídas
       {
         description: 'Mercado - Compras do mês',
-        value: 650.00,
+        value: '650.00',
         type: 'EXIT' as const,
         date: new Date('2024-10-05'),
         user,
@@ -149,7 +149,7 @@ export async function runSeed(dataSource: DataSource) {
       },
       {
         description: 'Restaurante - Almoço',
-        value: 85.00,
+        value: '85.00',
         type: 'EXIT' as const,
         date: new Date('2024-10-12'),
         user,
@@ -157,7 +157,7 @@ export async function runSeed(dataSource: DataSource) {
       },
       {
         description: 'Uber - Corridas da semana',
-        value: 120.00,
+        value: '120.00',
         type: 'EXIT' as const,
         date: new Date('2024-10-08'),
         user,
@@ -165,7 +165,7 @@ export async function runSeed(dataSource: DataSource) {
       },
       {
         description: 'Gasolina',
-        value: 250.00,
+        value: '250.00',
         type: 'EXIT' as const,
         date: new Date('2024-10-10'),
         user,
@@ -173,7 +173,7 @@ export async function runSeed(dataSource: DataSource) {
       },
       {
         description: 'Cinema - Ingressos',
-        value: 90.00,
+        value: '90.00',
         type: 'EXIT' as const,
         date: new Date('2024-10-14'),
         user,
@@ -181,7 +181,7 @@ export async function runSeed(dataSource: DataSource) {
       },
       {
         description: 'Conta de luz',
-        value: 180.00,
+        value: '180.00',
         type: 'EXIT' as const,
         date: new Date('2024-10-05'),
         user,
@@ -189,7 +189,7 @@ export async function runSeed(dataSource: DataSource) {
       },
       {
         description: 'Internet',
-        value: 99.90,
+        value: '99.90',
         type: 'EXIT' as const,
         date: new Date('2024-10-05'),
         user,
@@ -209,7 +209,7 @@ export async function runSeed(dataSource: DataSource) {
         const transaction = transactionRepo.create(txData);
         await transactionRepo.save(transaction);
         console.log(
-          `   ✅ Transação criada: ${txData.description} - R$ ${txData.value.toFixed(2)} (${txData.type})`
+          `   ✅ Transação criada: ${txData.description} - R$ ${txData.value} (${txData.type})`
         );
       } else {
         console.log(`   ℹ️  Transação já existe: ${txData.description}`);
